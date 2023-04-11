@@ -12,6 +12,15 @@
         android:theme="@style/Theme.MealPlanner"
         tools:targetApi="31">
         <activity
+            android:name=".viewShoppingList"
+            android:exported="false" />
+        <activity
+            android:name=".foodDescription"
+            android:exported="false" />
+        <activity
+            android:name=".searchMeals"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
