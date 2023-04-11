@@ -10,7 +10,7 @@ public class foodDescription extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.alertdialog);
+        setContentView(R.layout.fooddescription);
 
         //pull required widgets
 

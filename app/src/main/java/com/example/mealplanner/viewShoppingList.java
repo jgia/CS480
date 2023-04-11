@@ -18,6 +18,6 @@ public class viewShoppingList extends AppCompatActivity {
 
         //need to implement the checkbox.xml
 
-        //need map to use phones location, and find top five supermarkets nearby with google maps
+        //need map to use phones location, and find top five supermarkets nearby with google maps (use cloud api)
     }
 }

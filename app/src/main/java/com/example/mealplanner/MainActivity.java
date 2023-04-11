@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
         //pull widgets into vars
 
-        //run DB call to get weekly menu for user (local storage?) (should we do a call as it opens for all of it)
+        //run DB call to get weekly menu for user () (should we do a call as it opens for all of it)
 
         //need to select menu for specific day (SUN, MON, TUE, etc...)
 
