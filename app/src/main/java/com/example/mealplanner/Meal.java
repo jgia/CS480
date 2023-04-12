@@ -1,5 +1,7 @@
 package com.example.mealplanner;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Meal {
@@ -36,5 +38,12 @@ public class Meal {
         super();
         this.recipeID = recipeID;
         this.datetime = datetime;
+    }
+
+    //toString
+    @Override
+    public String toString() {
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd @ HH:mm");
+        return (dateFormat.format(getDateTime()) + "   -   " + "Recipe #" + getRecipeID());
     }
 }

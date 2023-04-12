@@ -9,15 +9,25 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.widget.TextView;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
+    // Variables for the list
+    private ListView weeklyMealsList;
+    private int item_position = -1;
+    private ArrayAdapter<Meal> adapt = null;
+    private ArrayList<Meal> meals = new ArrayList<>();
+
+    // Variables for SQLite database
     private SQLiteDatabase db;
     private ContentValues values;
     private Cursor cursor;
@@ -25,16 +35,18 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //updated
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //
+        // SQLITE STUFF
+        //
         helper = new SQLHelper(this);
 
         //create database
         try {
             db = helper.getWritableDatabase();
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             Log.d("SQLiteDemo", "Create database failed");
         }
 
@@ -50,10 +62,18 @@ public class MainActivity extends AppCompatActivity {
             throw new RuntimeException(e);
         }
 
-        ArrayList<Meal> mealList = helper.getMealList();
-        for (Meal item : mealList) {
-            System.out.println(item.getRecipeID() + " " + item.getDateTime() + "\n" );
-        }
+        //query database
+        meals = helper.getMealList();
+
+        //
+        // LIST STUFF
+        //
+        weeklyMealsList = findViewById(R.id.weeklyMeals);
+        weeklyMealsList.setOnItemClickListener(this); // Listener for when user clicks on list elements
+
+        adapt = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, meals);
+        weeklyMealsList.setAdapter(adapt);
+        System.out.println(meals);
 
 
         //pull widgets into vars
@@ -73,5 +93,11 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+        // When a list item is clicked, grab its position
+        item_position = position;
     }
 }
