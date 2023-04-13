@@ -5,8 +5,10 @@ package com.example.mealplanner;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,11 +21,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-public class searchMeals extends AppCompatActivity {
+public class searchMeals extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private EditText entry;
     private Button search;
     private ListView recipes;
-    private String name, duration, input;
+    private String name, duration, input, id;
     private ArrayList<String> recipeList;
     ArrayAdapter<String> adapter;
     @Override
@@ -35,6 +37,7 @@ public class searchMeals extends AppCompatActivity {
         entry = (EditText)findViewById(R.id.enterText);
         search = (Button) findViewById(R.id.searchButton);
         recipes = (ListView) findViewById(R.id.recipes);
+        recipes.setOnItemClickListener(this);
         recipeList = new ArrayList<String>();
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, recipeList);
         recipes.setAdapter(adapter);
@@ -57,6 +60,7 @@ public class searchMeals extends AppCompatActivity {
     Runnable databaseCall = new Runnable() {
         @Override
         public void run() {
+// MUST CHANGE DB LOGIN
             String URL = "jdbc:mysql://frodo.bentley.edu:3306/world";
             String username = "harry";
             String password = "harry";
@@ -72,14 +76,19 @@ public class searchMeals extends AppCompatActivity {
 
                 //pull the
                 input = entry.getText().toString();
-
+// *** NEED TO CHANGE VARNAMES FOR COLS AND TABLE
                 ResultSet result = stmt.executeQuery(
-                        "SELECT name, total_time FROM recipes WHERE name LIKE '%Chicken%';");
+                        "SELECT name, total_time, ID FROM recipes WHERE name LIKE '%Chicken%';");
 
                 while (result.next()){
                     name = result.getString("name");
                     duration = result.getString("total_time");
-                    recipeList.add(name + "\t" + duration);
+                    id = result.getString("ID");
+                    ArrayList<String> line = new ArrayList<String>();
+                    line.add(name);
+                    line.add(duration);
+                    line.add(id);
+                    recipeList.add(String.valueOf(line));
                 }
                 adapter.notifyDataSetChanged();
 
@@ -91,12 +100,13 @@ public class searchMeals extends AppCompatActivity {
         }
     };
 
-    //create function for when button is pressed (onClick) Example --> 09-BrowserView ex w/ button
-        // inside function start runnable thread
-    //Function must include search to DB for items (thread --> function?)
-        // Need query for search based on input (SELECT name, total_time FROM recipes WHERE name LIKE '%Chicken%';) (Maybe add LIMIT 25)
-
-        //
-        //This will be the runnable function to be ran in the thread
+    public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+        //get item specified
+        String recipeID = recipeList.get(position);
+        int recID = Integer.parseInt(recipeID);
+        //send intent to start food description with correct item in list
+        Intent intent = new Intent(searchMeals.this, foodDescription.class);
+        intent.putExtra("recipe_id", recID);
+    }
 
 }
