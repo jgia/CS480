@@ -10,10 +10,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 /** Helper to the database, manages versions and creation */
@@ -41,8 +39,7 @@ public class SQLHelper extends SQLiteOpenHelper {
     //NB: this is not a lifecycle method because this class is not an Activity
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = CREATE_TABLE;
-        Log.d("SQLiteDemo", "onCreate: " + sql);
+        Log.d("SQLiteDemo", "onCreate: " + CREATE_TABLE);
         db.execSQL(CREATE_TABLE);
     }
 
@@ -61,12 +58,12 @@ public class SQLHelper extends SQLiteOpenHelper {
     public void dropTable(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
-        onCreate(db);   //not calling a lifecycle method
+        onCreate(db);   //ot calling a lifecycle method
     }
 
-    //add meal to database
+    // Add meal to the database
     public void addMeal(Meal item) {
-        SimpleDateFormat formatter = new SimpleDateFormat("YYYY-MM-DD HH:MM:SS.SSS");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");
         SQLiteDatabase db = this.getWritableDatabase();
         values = new ContentValues();
         values.put(KEY_RECIPE, item.getRecipeID());
@@ -76,7 +73,7 @@ public class SQLHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    //update meal name in database
+    // Update meal name in the database
     public void updateMeal(Meal item, Meal newItem){
         SQLiteDatabase db = this.getWritableDatabase();
         values = new ContentValues();
@@ -86,7 +83,7 @@ public class SQLHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    //delete meal from database
+    // Delete meal from database
     public void deleteMeal(Meal item){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_NAME, KEY_RECIPE + "=?", new String[] {String.valueOf(item.getRecipeID())});
@@ -94,7 +91,7 @@ public class SQLHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    //query database and return ArrayList of all animals
+    // Query database and return ArrayList of all meals
     public ArrayList<Meal> getMealList () {
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -102,19 +99,17 @@ public class SQLHelper extends SQLiteOpenHelper {
                 new String[] {KEY_RECIPE, KEY_DATETIME},
                 null, null, null, null, KEY_RECIPE);
 
-        //write contents of Cursor to list
-        mealList = new ArrayList<Meal>();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-        while (cursor.moveToNext()) {
-            int recipe = cursor.getInt(cursor.getColumnIndex(KEY_RECIPE));
-            String textDate = cursor.getString(cursor.getColumnIndex(KEY_DATETIME));
-            try {
-                Date date = dateFormat.parse(textDate);
+        // Write contents of the cursor to mealList
+        mealList = new ArrayList<>();
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");
+        if (cursor != null && cursor.moveToFirst()) { // Ensure the cursor is not null
+            do {
+                int recipe = cursor.getInt(cursor.getColumnIndex(KEY_RECIPE));
+                String textDate = cursor.getString(cursor.getColumnIndex(KEY_DATETIME));
+                LocalDateTime date = LocalDateTime.parse(textDate, dateFormat);
                 mealList.add(new Meal(recipe, date));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        };
+            } while (cursor.moveToNext());
+        }
         db.close();
         return mealList;
     }

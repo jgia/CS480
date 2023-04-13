@@ -14,10 +14,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
@@ -37,6 +36,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");
+
+        //
+        // LIST STUFF
+        //
+        weeklyMealsList = findViewById(R.id.weeklyMeals);
+        weeklyMealsList.setOnItemClickListener(this); // Listener for when user clicks on list elements
+
+        adapt = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, meals);
+        weeklyMealsList.setAdapter(adapt);
 
         //
         // SQLITE STUFF
@@ -54,39 +63,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         helper.dropTable();
 
         //insert records
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-        try {
-            helper.addMeal(new Meal(1, dateFormat.parse("2023-04-11 15:23:45.123")));
-            helper.addMeal(new Meal(2, dateFormat.parse("2023-04-10 15:23:45.123")));
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
+        helper.addMeal(new Meal(38, LocalDateTime.parse("04-11-2023 15:23", dateFormat)));
+        helper.addMeal(new Meal(39, LocalDateTime.parse("04-10-2023 15:23", dateFormat)));
 
         //query database
         meals = helper.getMealList();
-
-        //
-        // LIST STUFF
-        //
-        weeklyMealsList = findViewById(R.id.weeklyMeals);
-        weeklyMealsList.setOnItemClickListener(this); // Listener for when user clicks on list elements
-
-        adapt = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, meals);
-        weeklyMealsList.setAdapter(adapt);
-        System.out.println(meals);
-
-
-        //pull widgets into vars
-
-        //run DB call to get weekly menu for user () (should we do a call as it opens for all of it)
-
-        //need to select menu for specific day (SUN, MON, TUE, etc...)
-
-        //once select day run smaller query for each day based of big query
-
-        // all items of day should then appear
-
-        // buttons next to each item, can view instructions (alertdialog.xml/foodDescription.java), or delete item
+        // update adapter with meals from databases
+        adapt.clear();
+        adapt.addAll(meals);
+        adapt.notifyDataSetChanged();
     }
 
     @Override
