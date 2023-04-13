@@ -2,7 +2,10 @@ package com.example.mealplanner;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
 public class foodDescription extends AppCompatActivity {
 
@@ -16,13 +19,43 @@ public class foodDescription extends AppCompatActivity {
 
         //make sure top menu there
 
-        //make DB call to receive name, instructions, ingredients, and maybe photo? -- may have to tweak xml if no
+        //two sections vertically, top description (text)
+        //listview below all ingredients from my sql
+        // add time picker for date
+        //select and add button at bottom, we want to scroll ingredients if too many
+        //dont worry abt quantity
 
-        //NEED TO ADD TO ALERTDIALOG.XML --> AT THE BOTTOM, HAVE TWO BUTTONS TO GO BACK OR ADD (NEED TO ADD DATE)
+        //when button pressed
+        //send recipe with date to local storage sqllite sqlhelper
+        //arraylist of items to make sure dont double up in TEXT FILE STORAGE
+        //send back to main activity
 
-        //if user chooses to add meal to plan, alert dialog pops up to confirm ( 13-AlertDialogs)
+        //implement menu
 
-        //may come in
-
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.browse:
+                startActivity(new Intent(this, searchMeals.class));
+                return true;
+            case R.id.shopping:
+                startActivity(new Intent(this, viewShoppingList.class));
+                return true;
+            case R.id.nearby:
+                // startActivity(new Intent(this, viewShoppingList.class)); NEED TO ADD XML FOR THIS
+                return true;
+            case R.id.home:
+                // Handle click on hidden item
+                startActivity(new Intent(this, MainActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

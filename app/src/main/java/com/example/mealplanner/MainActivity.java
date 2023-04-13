@@ -3,12 +3,14 @@ package com.example.mealplanner;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -78,6 +80,26 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.browse:
+                startActivity(new Intent(this, searchMeals.class));
+                return true;
+            case R.id.shopping:
+                startActivity(new Intent(this, viewShoppingList.class));
+                return true;
+            case R.id.nearby:
+                // startActivity(new Intent(this, viewShoppingList.class)); NEED TO ADD XML FOR THIS
+                return true;
+            case R.id.home:
+                // Handle click on hidden item
+                startActivity(new Intent(this, MainActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override

@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -77,8 +79,9 @@ public class searchMeals extends AppCompatActivity implements AdapterView.OnItem
                 //pull the
                 input = entry.getText().toString();
 // *** NEED TO CHANGE VARNAMES FOR COLS AND TABLE
+                //CHANGE TO PREPARED
                 ResultSet result = stmt.executeQuery(
-                        "SELECT name, total_time, ID FROM recipes WHERE name LIKE '%Chicken%';");
+                        "SELECT name, total_time, ID FROM recipes WHERE name LIKE '%' + input + '%';");
 
                 while (result.next()){
                     name = result.getString("name");
@@ -95,8 +98,6 @@ public class searchMeals extends AppCompatActivity implements AdapterView.OnItem
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-
-
         }
     };
 
@@ -108,5 +109,34 @@ public class searchMeals extends AppCompatActivity implements AdapterView.OnItem
         Intent intent = new Intent(searchMeals.this, foodDescription.class);
         intent.putExtra("recipe_id", recID);
     }
+
+    //code for menu
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.browse:
+                startActivity(new Intent(this, searchMeals.class));
+                return true;
+            case R.id.shopping:
+                startActivity(new Intent(this, viewShoppingList.class));
+                return true;
+            case R.id.nearby:
+               // startActivity(new Intent(this, viewShoppingList.class)); NEED TO ADD XML FOR THIS
+                return true;
+            case R.id.home:
+                // Handle click on hidden item
+                startActivity(new Intent(this, MainActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 
 }
