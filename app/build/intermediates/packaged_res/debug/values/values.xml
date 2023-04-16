@@ -8,6 +8,9 @@
     <color name="teal_700">#FF018786</color>
     <color name="white">#FFFFFFFF</color>
     <string name="app_name">MealPlanner</string>
+    <string name="delete">Delete</string>
+    <string name="meals_this_week">Meals This Week</string>
+    <string name="view_recipe">View Recipe</string>
     <style name="Theme.MealPlanner" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         
         <item name="colorPrimary">@color/purple_500</item>

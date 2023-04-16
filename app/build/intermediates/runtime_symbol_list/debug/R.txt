@@ -2903,6 +2903,7 @@ int id bounceStart 0x7f080061
 int id browse 0x7f080062
 int id browseTitle 0x7f080063
 int id buttonPanel 0x7f080064
+int id button_layout 0x7f0801ff
 int id cache_measures 0x7f080065
 int id callMeasure 0x7f080066
 int id cancel_button 0x7f080067
@@ -2947,6 +2948,7 @@ int id decelerate 0x7f08008d
 int id decelerateAndComplete 0x7f08008e
 int id decor_content_parent 0x7f08008f
 int id default_activity_button 0x7f080090
+int id delete_button 0x7f0801fe
 int id deltaRelative 0x7f080091
 int id dependency_ordering 0x7f080092
 int id design_bottom_sheet 0x7f080093
@@ -3152,6 +3154,7 @@ int id progress_circular 0x7f08015a
 int id progress_horizontal 0x7f08015b
 int id radio 0x7f08015c
 int id ratio 0x7f08015d
+int id recipe_button 0x7f080200
 int id recipes 0x7f08015e
 int id rectangles 0x7f08015f
 int id reverseSawtooth 0x7f080160
@@ -3546,6 +3549,7 @@ int string character_counter_content_description 0x7f100024
 int string character_counter_overflowed_content_description 0x7f100025
 int string character_counter_pattern 0x7f100026
 int string clear_text_end_icon_content_description 0x7f100027
+int string delete 0x7f10009b
 int string error_a11y_label 0x7f100028
 int string error_icon_content_description 0x7f100029
 int string exposed_dropdown_menu_content_description 0x7f10002a
@@ -3587,6 +3591,7 @@ int string material_timepicker_minute 0x7f10004d
 int string material_timepicker_pm 0x7f10004e
 int string material_timepicker_select_time 0x7f10004f
 int string material_timepicker_text_input_mode_description 0x7f100050
+int string meals_this_week 0x7f10009c
 int string mtrl_badge_numberless_content_description 0x7f100051
 int string mtrl_checkbox_button_icon_path_checked 0x7f100052
 int string mtrl_checkbox_button_icon_path_group_name 0x7f100053
@@ -3661,6 +3666,7 @@ int string searchview_navigation_content_description 0x7f100097
 int string side_sheet_accessibility_pane_title 0x7f100098
 int string side_sheet_behavior 0x7f100099
 int string status_bar_notification_info_overflow 0x7f10009a
+int string view_recipe 0x7f10009d
 int style AlertDialog_AppCompat 0x7f110000
 int style AlertDialog_AppCompat_Light 0x7f110001
 int style Animation_AppCompat_Dialog 0x7f110002

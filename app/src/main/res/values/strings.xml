@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">MealPlanner</string>
+    <string name="meals_this_week">Meals This Week</string>
+    <string name="delete">Delete</string>
+    <string name="view_recipe">View Recipe</string>
 </resources>

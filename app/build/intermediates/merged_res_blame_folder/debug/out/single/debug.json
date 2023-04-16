@@ -1,7 +1,15 @@
 [
     {
+        "merged": "C:\\Users\\johnr\\.gradle\\daemon\\7.5\\com.example.mealplanner.app-merged_res-29:\\layout_seaarchlistitem.xml.flat",
+        "source": "C:\\Users\\johnr\\.gradle\\daemon\\7.5\\com.example.mealplanner.app-main-31:\\layout\\seaarchlistitem.xml"
+    },
+    {
         "merged": "C:\\Users\\johnr\\.gradle\\daemon\\7.5\\com.example.mealplanner.app-merged_res-29:\\mipmap-xxhdpi_ic_launcher_round.webp.flat",
         "source": "C:\\Users\\johnr\\.gradle\\daemon\\7.5\\com.example.mealplanner.app-main-31:\\mipmap-xxhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.mealplanner.app-merged_res-29:/layout_activity_main.xml.flat",
+        "source": "com.example.mealplanner.app-main-31:/layout/activity_main.xml"
     },
     {
         "merged": "C:\\Users\\johnr\\.gradle\\daemon\\7.5\\com.example.mealplanner.app-merged_res-29:\\layout_activity_main.xml.flat",
@@ -38,10 +46,6 @@
     {
         "merged": "C:\\Users\\johnr\\.gradle\\daemon\\7.5\\com.example.mealplanner.app-merged_res-29:\\layout_activity_search_meals.xml.flat",
         "source": "C:\\Users\\johnr\\.gradle\\daemon\\7.5\\com.example.mealplanner.app-main-31:\\layout\\activity_search_meals.xml"
-    },
-    {
-        "merged": "com.example.mealplanner.app-merged_res-29:/layout_seaarchlistitem.xml.flat",
-        "source": "com.example.mealplanner.app-main-31:/layout/seaarchlistitem.xml"
     },
     {
         "merged": "C:\\Users\\johnr\\.gradle\\daemon\\7.5\\com.example.mealplanner.app-merged_res-29:\\mipmap-xhdpi_ic_launcher.webp.flat",
@@ -92,15 +96,11 @@
         "source": "C:\\Users\\johnr\\.gradle\\daemon\\7.5\\com.example.mealplanner.app-main-31:\\mipmap-xxxhdpi\\ic_launcher.webp"
     },
     {
-        "merged": "com.example.mealplanner.app-merged_res-29:/layout_browse_meals_search.xml.flat",
-        "source": "com.example.mealplanner.app-main-31:/layout/browse_meals_search.xml"
+        "merged": "C:\\Users\\johnr\\.gradle\\daemon\\7.5\\com.example.mealplanner.app-merged_res-29:\\layout_browse_meals_search.xml.flat",
+        "source": "C:\\Users\\johnr\\.gradle\\daemon\\7.5\\com.example.mealplanner.app-main-31:\\layout\\browse_meals_search.xml"
     },
     {
         "merged": "C:\\Users\\johnr\\.gradle\\daemon\\7.5\\com.example.mealplanner.app-merged_res-29:\\mipmap-hdpi_ic_launcher_round.webp.flat",
         "source": "C:\\Users\\johnr\\.gradle\\daemon\\7.5\\com.example.mealplanner.app-main-31:\\mipmap-hdpi\\ic_launcher_round.webp"
-    },
-    {
-        "merged": "C:\\Users\\johnr\\.gradle\\daemon\\7.5\\com.example.mealplanner.app-merged_res-29:\\layout_browse_meals_search.xml.flat",
-        "source": "C:\\Users\\johnr\\.gradle\\daemon\\7.5\\com.example.mealplanner.app-main-31:\\layout\\browse_meals_search.xml"
     }
 ]

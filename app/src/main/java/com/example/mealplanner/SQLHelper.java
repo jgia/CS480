@@ -81,10 +81,10 @@ public class SQLHelper extends SQLiteOpenHelper {
     }
 
     // Delete meal from database
-    public void deleteMeal(Meal item) {
+    public void deleteMeal(int recipeID, String dateStr) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_NAME, KEY_RECIPE + "=?", new String[]{String.valueOf(item.getRecipeID())});
-        Log.d("SQLiteDemo", item.getRecipeID() + " deleted");
+        db.delete(TABLE_NAME, KEY_RECIPE + "=? AND " + KEY_DATETIME +  "=?", new String[]{String.valueOf(recipeID),dateStr});
+        Log.d("SQLiteDemo","item deleted");
         db.close();
     }
 
