@@ -1,8 +1,5 @@
 package com.example.mealplanner;
 
-//This class is not an Activity. It is a helper class
-// used to execute the SQL statements on SQLite.
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -10,11 +7,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 
-/** Helper to the database, manages versions and creation */
 public class SQLHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "meal.db";
@@ -28,8 +27,6 @@ public class SQLHelper extends SQLiteOpenHelper {
             + KEY_DATETIME + " text);";
 
     private ContentValues values;
-    private ArrayList<Meal> mealList;
-    private Cursor cursor;
 
     public SQLHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -55,7 +52,7 @@ public class SQLHelper extends SQLiteOpenHelper {
     }
 
     //drop table
-    public void dropTable(){
+    public void dropTable() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);   //ot calling a lifecycle method
@@ -74,41 +71,66 @@ public class SQLHelper extends SQLiteOpenHelper {
     }
 
     // Update meal name in the database
-    public void updateMeal(Meal item, Meal newItem){
+    public void updateMeal(Meal item, Meal newItem) {
         SQLiteDatabase db = this.getWritableDatabase();
         values = new ContentValues();
         values.put(KEY_RECIPE, newItem.getRecipeID());
-        db.update(TABLE_NAME, values, KEY_RECIPE + "=?", new String[] {String.valueOf(item.getRecipeID())});
+        db.update(TABLE_NAME, values, KEY_RECIPE + "=?", new String[]{String.valueOf(item.getRecipeID())});
         Log.d("SQLiteDemo", item.getRecipeID() + " updated");
         db.close();
     }
 
     // Delete meal from database
-    public void deleteMeal(Meal item){
+    public void deleteMeal(Meal item) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_NAME, KEY_RECIPE + "=?", new String[] {String.valueOf(item.getRecipeID())});
+        db.delete(TABLE_NAME, KEY_RECIPE + "=?", new String[]{String.valueOf(item.getRecipeID())});
         Log.d("SQLiteDemo", item.getRecipeID() + " deleted");
         db.close();
     }
 
     // Query database and return ArrayList of all meals
-    public ArrayList<Meal> getMealList () {
+    public ArrayList<Meal> getMealList() {
 
         SQLiteDatabase db = this.getWritableDatabase();
-        cursor = db.query(TABLE_NAME,
-                new String[] {KEY_RECIPE, KEY_DATETIME},
-                null, null, null, null, KEY_RECIPE);
+
+        // Get the start date and end date of the current week
+        LocalDate today = LocalDate.now();
+        LocalDate sundayDate = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY)); // Set startDate as Sunday of the current week
+        LocalDateTime sundayDateTime = sundayDate.atTime(0, 0); // Set the time to midnight
+        LocalDate saturdayDate = today.with(TemporalAdjusters.nextOrSame(DayOfWeek.SATURDAY)); // Set endDate as Saturday of the current week
+        LocalDateTime saturdayDateTime = saturdayDate.atTime(23, 59); // Set the time to 23:59
+
+        // The SQLLite query will use a date format of yyyy-MM-dd for for selecting within a date range
+        DateTimeFormatter queryDateFormat = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");
+        String stringSundayDate = queryDateFormat.format(sundayDateTime);
+        String stringSaturdayDate = queryDateFormat.format(saturdayDateTime);
+        // We want to select only meals that are between Sunday and Saturday of the current week
+        String selection = KEY_DATETIME + " BETWEEN ? AND ?";
+        String[] selectionArgs = {stringSundayDate, stringSaturdayDate};
+
+        Cursor cursor = db.query(TABLE_NAME,
+                new String[]{KEY_RECIPE, KEY_DATETIME},
+                selection, selectionArgs, null, null, KEY_RECIPE);
 
         // Write contents of the cursor to mealList
-        mealList = new ArrayList<>();
+        ArrayList<Meal> mealList = new ArrayList<>();
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");
         if (cursor != null && cursor.moveToFirst()) { // Ensure the cursor is not null
             do {
-                int recipe = cursor.getInt(cursor.getColumnIndex(KEY_RECIPE));
-                String textDate = cursor.getString(cursor.getColumnIndex(KEY_DATETIME));
-                LocalDateTime date = LocalDateTime.parse(textDate, dateFormat);
-                mealList.add(new Meal(recipe, date));
+                int recipeIndex = cursor.getColumnIndex(KEY_RECIPE);
+                int datetimeIndex = cursor.getColumnIndex(KEY_DATETIME);
+
+                if (recipeIndex != -1 && datetimeIndex != -1) { // Resolves the error "Value must be ≥ 0 but `getColumnIndex` can be -1" on cursor.getColumnIndex(KEY_RECIPE)
+                    int recipe = cursor.getInt(recipeIndex);
+                    String textDate = cursor.getString(datetimeIndex);
+                    LocalDateTime date = LocalDateTime.parse(textDate, dateFormat);
+                    mealList.add(new Meal(recipe, date));
+                }
             } while (cursor.moveToNext());
+        }
+
+        if (cursor != null) {
+            cursor.close();
         }
         db.close();
         return mealList;

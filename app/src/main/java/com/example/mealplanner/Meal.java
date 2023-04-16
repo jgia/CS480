@@ -9,13 +9,10 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.time.LocalDateTime;
 
-public class Meal{
+public class Meal {
     private String recipeName;
     private int mealID;
     private int recipeID;
@@ -25,6 +22,7 @@ public class Meal{
     public int getMealID() {
         return mealID;
     }
+
     public void setMealID(int id) {
         this.mealID = id;
     }
@@ -46,7 +44,7 @@ public class Meal{
     }
 
     //constructor
-    public Meal(int recipeID, LocalDateTime datetime){
+    public Meal(int recipeID, LocalDateTime datetime) {
         super();
         this.recipeID = recipeID;
         this.datetime = datetime;
