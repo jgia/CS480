@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".searchMeals">
+
+    <TextView
+        android:id="@+id/browseTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:text="Browse Meals"
+        />
+
+    <TextView
+        android:id="@+id/textInstruct"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/browseTitle"
+        android:textAlignment="center"
+        android:text="Enter ingredients separated by comas and click Search"
+        />
+
+    <EditText
+        android:id="@+id/enterText"
+        android:layout_width="300dp"
+        android:layout_height="48dp"
+        android:layout_below="@+id/textInstruct"
+        android:hint="Enter text here..." />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/searchButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="1dp"
+        android:layout_below="@+id/textInstruct"
+        android:layout_toRightOf="@+id/enterText"
+        android:text="Search" />
+
+    <ListView
+        android:id="@+id/recipes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/enterText"
+        />
+
+</RelativeLayout>
