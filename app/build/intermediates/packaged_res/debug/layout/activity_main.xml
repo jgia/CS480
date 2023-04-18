@@ -5,26 +5,16 @@
 
     <TextView
         android:id="@+id/title"
-<<<<<<< HEAD
-        android:text="Meals This Week"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-=======
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:text="@string/meals_this_week"
->>>>>>> origin/main
         android:gravity="center"
         android:paddingVertical="15dp" />
 
     <ListView
         android:id="@+id/weeklyMeals"
         android:layout_width="match_parent"
-<<<<<<< HEAD
-        android:layout_height="wrap_content"
-        android:layout_below="@id/title" />
-=======
         android:layout_height="match_parent"
         android:layout_below="@id/title"
         android:layout_above="@+id/button_layout" />
@@ -53,6 +43,5 @@
             style="?android:attr/buttonBarButtonStyle" />
 
     </LinearLayout>
->>>>>>> origin/main
 
 </RelativeLayout>

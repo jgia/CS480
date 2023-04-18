@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,9 +16,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -55,6 +58,13 @@ public class searchMeals extends AppCompatActivity implements AdapterView.OnItem
                 Thread t = new Thread(databaseCall);
                 t.start();
 
+                try {
+                    t.join();
+                    // The thread has finished executing
+                    adapter.notifyDataSetChanged();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -63,9 +73,9 @@ public class searchMeals extends AppCompatActivity implements AdapterView.OnItem
         @Override
         public void run() {
 // MUST CHANGE DB LOGIN
-            String URL = "jdbc:mysql://frodo.bentley.edu:3306/world";
-            String username = "harry";
-            String password = "harry";
+            String URL = "jdbc:mysql://webdev.bentley.edu:3306/jgiaquinto";
+            String username = "jgiaquinto";
+            String password = "3740";
             Statement stmt = null;
 
             //Note try with resources block
@@ -79,35 +89,48 @@ public class searchMeals extends AppCompatActivity implements AdapterView.OnItem
                 //pull the
                 input = entry.getText().toString();
 // *** NEED TO CHANGE VARNAMES FOR COLS AND TABLE
+                // Create a prepared statement for the SELECT query
+                String query = "SELECT Name, TotalTime, RecipeID FROM recipe WHERE LOWER(Name) LIKE ?";
+                PreparedStatement pstmt = con.prepareStatement(query);
+
+                // Set the input parameter for the prepared statement
+                String input = entry.getText().toString().toLowerCase();
+                pstmt.setString(1, "%" + input + "%");
+
                 //CHANGE TO PREPARED
-                ResultSet result = stmt.executeQuery(
-                        "SELECT name, total_time, ID FROM recipes WHERE name LIKE '%' + input + '%';");
+                ResultSet result = pstmt.executeQuery();
 
                 while (result.next()){
-                    name = result.getString("name");
-                    duration = result.getString("total_time");
-                    id = result.getString("ID");
+                    name = result.getString("Name");
+                    duration = result.getString("TotalTime");
+                    id = result.getString("RecipeID");
+                    /*
                     ArrayList<String> line = new ArrayList<String>();
                     line.add(name);
                     line.add(duration);
-                    line.add(id);
-                    recipeList.add(String.valueOf(line));
+                    line.add(id);*/
+                    String line = String.join(",", name, duration, id);
+                    recipeList.add(line);
                 }
-                adapter.notifyDataSetChanged();
+
 
             } catch (SQLException e) {
                 e.printStackTrace();
+                Log.d("TAG", e.toString());
             }
         }
     };
 
     public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
         //get item specified
-        String recipeID = recipeList.get(position);
-        int recID = Integer.parseInt(recipeID);
+        String input = recipeList.get(position);
+        String[] words = input.split(",");
+        String recipeID = words[2];
+
         //send intent to start food description with correct item in list
         Intent intent = new Intent(searchMeals.this, foodDescription.class);
-        intent.putExtra("recipe_id", recID);
+        intent.putExtra("recipe_id", recipeID);
+        startActivity(intent);
     }
 
     //code for menu
