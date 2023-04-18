@@ -2904,6 +2904,7 @@ id bounceStart
 id browse
 id browseTitle
 id buttonPanel
+id button_layout
 id cache_measures
 id callMeasure
 id cancel_button
@@ -2948,6 +2949,7 @@ id decelerate
 id decelerateAndComplete
 id decor_content_parent
 id default_activity_button
+id delete_button
 id deltaRelative
 id dependency_ordering
 id design_bottom_sheet
@@ -3153,6 +3155,7 @@ id progress_circular
 id progress_horizontal
 id radio
 id ratio
+id recipe_button
 id recipes
 id rectangles
 id reverseSawtooth
@@ -3547,6 +3550,7 @@ string character_counter_content_description
 string character_counter_overflowed_content_description
 string character_counter_pattern
 string clear_text_end_icon_content_description
+string delete
 string error_a11y_label
 string error_icon_content_description
 string exposed_dropdown_menu_content_description
@@ -3588,6 +3592,7 @@ string material_timepicker_minute
 string material_timepicker_pm
 string material_timepicker_select_time
 string material_timepicker_text_input_mode_description
+string meals_this_week
 string mtrl_badge_numberless_content_description
 string mtrl_checkbox_button_icon_path_checked
 string mtrl_checkbox_button_icon_path_group_name
@@ -3662,6 +3667,7 @@ string searchview_navigation_content_description
 string side_sheet_accessibility_pane_title
 string side_sheet_behavior
 string status_bar_notification_info_overflow
+string view_recipe
 style AlertDialog_AppCompat
 style AlertDialog_AppCompat_Light
 style Animation_AppCompat_Dialog
