@@ -4,9 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -25,8 +28,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Locale;
 
-public class foodDescription extends AppCompatActivity {
+public class foodDescription extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private TextView title;
     private TextView description;
     private TextView instructions;
@@ -35,6 +39,7 @@ public class foodDescription extends AppCompatActivity {
     private ArrayList<String> ingredientList;
     ArrayAdapter<String> adapter;
     private String name, descriptionStr, instructionsStr;
+    private TextToSpeech speaker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +56,36 @@ public class foodDescription extends AppCompatActivity {
         description = (TextView) findViewById(R.id.food_description);
         instructions = (TextView) findViewById(R.id.instructions);
         ingredients = (ListView) findViewById(R.id.ingredients_list);
+        ingredients.setOnItemClickListener(this);
 
         ingredientList = new ArrayList<String>();
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, ingredientList);
         ingredients.setAdapter(adapter);
+
+        // get text to speech ready
+        speaker = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int i) {
+                // status can be either TextToSpeech.SUCCESS or TextToSpeech.ERROR.
+                if (i == TextToSpeech.SUCCESS) {
+                    // Set preferred language to US english.
+                    // If a language is not be available, the result will indicate it.
+                    int result = speaker.setLanguage(Locale.US);
+
+                    if (result == TextToSpeech.LANG_MISSING_DATA ||
+                            result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        // Language data is missing or the language is not supported.
+                        Log.e("tts", "Language is not available.");
+                    } else {
+                        // The TTS engine has been successfully initialized
+                        Log.i("tts", "TTS Initialization successful.");
+                    }
+                } else {
+                    // Initialization failed.
+                    Log.e("tts", "Could not initialize TextToSpeech.");
+                }
+            }
+        });
 
         //thread for getting all widgets data from sql query with recipe ID
         Thread t1 = new Thread(ingredientData);
@@ -74,12 +105,23 @@ public class foodDescription extends AppCompatActivity {
             instructionsStr = fixInstructions(instructionsStr);
             instructions.setText(instructionsStr);
             Log.e("tag", instructionsStr);
-           // Toast.makeText(foodDescription.this, instructionsStr, Toast.LENGTH_LONG).show();
-         //   Toast.makeText(foodDescription.this, ingredientList.toString(), Toast.LENGTH_LONG).show();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
+    }
+    //speaker functions needed
+    public void speak(String output){
+        speaker.speak(output, TextToSpeech.QUEUE_FLUSH, null, "Id 0");
+    }
+    public void onDestroy(){
+
+        // shut down TTS engine
+        if(speaker != null){
+            speaker.stop();
+            speaker.shutdown();
+        }
+        super.onDestroy();
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -192,6 +234,11 @@ public class foodDescription extends AppCompatActivity {
             }
         }
     };
+    public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+        // when list item clicked, get the position of item, set it to edit text widget
+        String text = ingredientList.get(position);
+        speak(text);
+    }
     public String fixInstructions(String in){
         StringBuilder sb = new StringBuilder();
 
@@ -252,9 +299,9 @@ public class foodDescription extends AppCompatActivity {
         }catch (IOException e){
             e.printStackTrace();
         }
-
-
     }
+
+
 
 }
 
