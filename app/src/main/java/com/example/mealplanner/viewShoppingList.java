@@ -7,6 +7,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.sql.Array;
+import java.util.ArrayList;
+
 public class viewShoppingList extends AppCompatActivity {
 
     @Override
@@ -48,5 +56,28 @@ public class viewShoppingList extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public ArrayList<String> getItemsIO(){
+        //initialize lst
+        ArrayList<String> list = new ArrayList<>();
+        try {
+            //  connect in stream
+            //open stream for reading from file
+            InputStream in = openFileInput("shoppingList.txt");
+            InputStreamReader isr = new InputStreamReader(in);
+            BufferedReader reader = new BufferedReader(isr);
+            String str = null;
+
+            while ((str = reader.readLine()) != null) {
+                //read existing items into shoppingList str is line
+                list.add(str);
+            }
+            //close in stream
+            reader.close();
+        }catch (FileNotFoundException e) {} catch (IOException e) {}
+
+        return list;
+
     }
 }
