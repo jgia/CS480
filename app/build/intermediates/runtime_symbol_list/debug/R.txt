@@ -2904,6 +2904,7 @@ int id browse 0x7f080062
 int id browseTitle 0x7f080063
 int id buttonPanel 0x7f080064
 int id button_layout 0x7f080065
+int id buttons 0x7f080204
 int id cache_measures 0x7f080066
 int id callMeasure 0x7f080067
 int id cancel_button 0x7f080068
@@ -2943,6 +2944,7 @@ int id currentState 0x7f080089
 int id custom 0x7f08008a
 int id customPanel 0x7f08008b
 int id cut 0x7f08008c
+int id datePicker 0x7f080205
 int id date_picker_actions 0x7f08008d
 int id decelerate 0x7f08008e
 int id decelerateAndComplete 0x7f08008f
@@ -3079,6 +3081,7 @@ int id material_timepicker_ok_button 0x7f080111
 int id material_timepicker_view 0x7f080112
 int id material_value_index 0x7f080113
 int id matrix 0x7f080114
+int id meal_button 0x7f080206
 int id message 0x7f080115
 int id middle 0x7f080116
 int id mini 0x7f080117
@@ -3216,6 +3219,7 @@ int id sin 0x7f08019a
 int id skipCollapsed 0x7f08019b
 int id skipped 0x7f08019c
 int id slide 0x7f08019d
+int id slist_button 0x7f080207
 int id snackbar_action 0x7f08019e
 int id snackbar_text 0x7f08019f
 int id snap 0x7f0801a0

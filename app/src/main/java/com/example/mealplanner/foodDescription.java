@@ -2,35 +2,37 @@ package com.example.mealplanner;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.TimePicker;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Locale;
 
-public class foodDescription extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class foodDescription extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
+    private final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");
     private TextView title;
     private TextView description;
     private TextView instructions;
@@ -39,7 +41,7 @@ public class foodDescription extends AppCompatActivity implements AdapterView.On
     private ArrayList<String> ingredientList;
     ArrayAdapter<String> adapter;
     private String name, descriptionStr, instructionsStr;
-    private TextToSpeech speaker;
+    private String month, day, year, hour, minute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,40 +54,14 @@ public class foodDescription extends AppCompatActivity implements AdapterView.On
         recipeID = intent.getIntExtra("recipe_id", 0);
 
         //pull required widgets
-        title = (TextView) findViewById(R.id.food_name);
-        description = (TextView) findViewById(R.id.food_description);
-        instructions = (TextView) findViewById(R.id.instructions);
-        ingredients = (ListView) findViewById(R.id.ingredients_list);
-        ingredients.setOnItemClickListener(this);
+        title = findViewById(R.id.food_name);
+        description = findViewById(R.id.food_description);
+        instructions = findViewById(R.id.instructions);
+        ingredients = findViewById(R.id.ingredients_list);
 
-        ingredientList = new ArrayList<String>();
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, ingredientList);
+        ingredientList = new ArrayList<>();
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, ingredientList);
         ingredients.setAdapter(adapter);
-
-        // get text to speech ready
-        speaker = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int i) {
-                // status can be either TextToSpeech.SUCCESS or TextToSpeech.ERROR.
-                if (i == TextToSpeech.SUCCESS) {
-                    // Set preferred language to US english.
-                    // If a language is not be available, the result will indicate it.
-                    int result = speaker.setLanguage(Locale.US);
-
-                    if (result == TextToSpeech.LANG_MISSING_DATA ||
-                            result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                        // Language data is missing or the language is not supported.
-                        Log.e("tts", "Language is not available.");
-                    } else {
-                        // The TTS engine has been successfully initialized
-                        Log.i("tts", "TTS Initialization successful.");
-                    }
-                } else {
-                    // Initialization failed.
-                    Log.e("tts", "Could not initialize TextToSpeech.");
-                }
-            }
-        });
 
         //thread for getting all widgets data from sql query with recipe ID
         Thread t1 = new Thread(ingredientData);
@@ -105,29 +81,31 @@ public class foodDescription extends AppCompatActivity implements AdapterView.On
             instructionsStr = fixInstructions(instructionsStr);
             instructions.setText(instructionsStr);
             Log.e("tag", instructionsStr);
+           // Toast.makeText(foodDescription.this, instructionsStr, Toast.LENGTH_LONG).show();
+         //   Toast.makeText(foodDescription.this, ingredientList.toString(), Toast.LENGTH_LONG).show();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-    }
-    //speaker functions needed
-    public void speak(String output){
-        speaker.speak(output, TextToSpeech.QUEUE_FLUSH, null, "Id 0");
-    }
-    public void onDestroy(){
+        Button meal_button = findViewById(R.id.meal_button);
+        meal_button.setOnClickListener(view -> {
+            LocalDateTime now = LocalDateTime.now();
+            int currentYear = now.getYear();
+            int currentMonth = now.getMonthValue();
+            int currentDay = now.getDayOfMonth();
+            System.out.println(currentYear + " " + currentMonth + " " + currentDay);
 
-        // shut down TTS engine
-        if(speaker != null){
-            speaker.stop();
-            speaker.shutdown();
-        }
-        super.onDestroy();
+            DatePickerDialog dateDialog = new DatePickerDialog(this, this, currentYear, currentMonth-1, currentDay);
+            dateDialog.show();
+        });
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -154,7 +132,6 @@ public class foodDescription extends AppCompatActivity implements AdapterView.On
             String URL = "jdbc:mysql://webdev.bentley.edu:3306/jgiaquinto";
             String username = "jgiaquinto";
             String password = "3740";
-            Statement stmt = null;
 
             try  //create connection to database
                     (Connection con = DriverManager.getConnection(
@@ -195,7 +172,6 @@ public class foodDescription extends AppCompatActivity implements AdapterView.On
             String URL = "jdbc:mysql://webdev.bentley.edu:3306/jgiaquinto";
             String username = "jgiaquinto";
             String password = "3740";
-            Statement stmt = null;
 
             try  //create connection to database
                     (Connection con = DriverManager.getConnection(
@@ -221,11 +197,8 @@ public class foodDescription extends AppCompatActivity implements AdapterView.On
 // Process the result set as needed
                 while (result.next()) {
                     String ingredientName = result.getString("Name");
-
                     // add to array list with concatenated str
-                    String line = ingredientName;
-                    System.out.println("\n\n\n" + ingredientName + "\n\n\n");
-                    ingredientList.add(line);
+                    ingredientList.add(ingredientName);
                 }
 
             } catch (SQLException e) {
@@ -234,11 +207,6 @@ public class foodDescription extends AppCompatActivity implements AdapterView.On
             }
         }
     };
-    public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-        // when list item clicked, get the position of item, set it to edit text widget
-        String text = ingredientList.get(position);
-        speak(text);
-    }
     public String fixInstructions(String in){
         StringBuilder sb = new StringBuilder();
 
@@ -270,7 +238,7 @@ public class foodDescription extends AppCompatActivity implements AdapterView.On
             InputStream in = openFileInput("shoppingList.txt");
             InputStreamReader isr = new InputStreamReader(in);
             BufferedReader reader = new BufferedReader(isr);
-            String str = null;
+            String str;
 
             while ((str = reader.readLine()) != null) {
                 //read existing items into shoppingList str is line
@@ -301,8 +269,53 @@ public class foodDescription extends AppCompatActivity implements AdapterView.On
         }
     }
 
+    @Override
+    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+        this.year = String.valueOf(year);
+        if ((month / 10) >= 1){
+            this.month = String.valueOf(month);
+        }
+        else{
+            this.month = "0" + month;
+        }
+        if ((day / 10) >= 1){
+            this.day = String.valueOf(day);
+        }
+        else{
+            this.day = "0" + day;
+        }
 
 
+        TimePickerDialog timeDialog = new TimePickerDialog(this, this, 00, 00, true);
+        timeDialog.show();
+    }
+    @Override
+    public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+        if ((hour / 10) >= 1){
+            this.hour = String.valueOf(hour);
+        }
+        else{
+            this.hour = "0" + hour;
+        }
+        if ((minute / 10) >= 1){
+            this.minute = String.valueOf(minute);
+        }
+        else{
+            this.minute = "0" + minute;
+        }
+        createMeal();
+    }
+
+    public void createMeal(){
+        try (SQLHelper helper = new SQLHelper(this)) {
+            System.out.println(recipeID);
+            System.out.println(month+"-"+day+"-"+year+" "+hour+":"+minute);
+            helper.addMeal(new Meal(recipeID, LocalDateTime.parse(month+"-"+day+"-"+year+" "+hour+":"+minute, dateFormat)));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
 
 
