@@ -2958,8 +2958,6 @@ id design_menu_item_action_area_stub
 id design_menu_item_text
 id design_navigation_view
 id dialog_button
-id dialog_ingredients
-id dialog_instructions
 id dimensions
 id direct
 id disableHome
@@ -3004,7 +3002,8 @@ id fitXY
 id fixed
 id flip
 id floating
-id food_image
+id food_description
+id food_name
 id forever
 id fragment_container_view_tag
 id frost
@@ -3033,6 +3032,10 @@ id immediateStop
 id included
 id indeterminate
 id info
+id ingredients_list
+id ingredients_title
+id instructions
+id instructions_title
 id invisible
 id inward
 id italic

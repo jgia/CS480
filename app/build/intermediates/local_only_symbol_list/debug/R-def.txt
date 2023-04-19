@@ -14,11 +14,14 @@ id browseTitle
 id button_layout
 id checkBox
 id delete_button
-id dialog_ingredients
-id dialog_instructions
 id enterText
-id food_image
+id food_description
+id food_name
 id home
+id ingredients_list
+id ingredients_title
+id instructions
+id instructions_title
 id list_view_1
 id map
 id nearby

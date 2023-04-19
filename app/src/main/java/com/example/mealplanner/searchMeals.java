@@ -125,7 +125,7 @@ public class searchMeals extends AppCompatActivity implements AdapterView.OnItem
         //get item specified
         String input = recipeList.get(position);
         String[] words = input.split(",");
-        String recipeID = words[2];
+        int recipeID = Integer.parseInt(words[2]);
 
         //send intent to start food description with correct item in list
         Intent intent = new Intent(searchMeals.this, foodDescription.class);
