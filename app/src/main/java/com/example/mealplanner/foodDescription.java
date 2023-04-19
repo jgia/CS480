@@ -2,31 +2,37 @@ package com.example.mealplanner;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.TimePicker;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-public class foodDescription extends AppCompatActivity {
+public class foodDescription extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
+    private final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");
     private TextView title;
     private TextView description;
     private TextView instructions;
@@ -35,6 +41,7 @@ public class foodDescription extends AppCompatActivity {
     private ArrayList<String> ingredientList;
     ArrayAdapter<String> adapter;
     private String name, descriptionStr, instructionsStr;
+    private String month, day, year, hour, minute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,13 +54,13 @@ public class foodDescription extends AppCompatActivity {
         recipeID = intent.getIntExtra("recipe_id", 0);
 
         //pull required widgets
-        title = (TextView) findViewById(R.id.food_name);
-        description = (TextView) findViewById(R.id.food_description);
-        instructions = (TextView) findViewById(R.id.instructions);
-        ingredients = (ListView) findViewById(R.id.ingredients_list);
+        title = findViewById(R.id.food_name);
+        description = findViewById(R.id.food_description);
+        instructions = findViewById(R.id.instructions);
+        ingredients = findViewById(R.id.ingredients_list);
 
-        ingredientList = new ArrayList<String>();
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, ingredientList);
+        ingredientList = new ArrayList<>();
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, ingredientList);
         ingredients.setAdapter(adapter);
 
         //thread for getting all widgets data from sql query with recipe ID
@@ -80,12 +87,25 @@ public class foodDescription extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        Button meal_button = findViewById(R.id.meal_button);
+        meal_button.setOnClickListener(view -> {
+            LocalDateTime now = LocalDateTime.now();
+            int currentYear = now.getYear();
+            int currentMonth = now.getMonthValue();
+            int currentDay = now.getDayOfMonth();
+            System.out.println(currentYear + " " + currentMonth + " " + currentDay);
+
+            DatePickerDialog dateDialog = new DatePickerDialog(this, this, currentYear, currentMonth-1, currentDay);
+            dateDialog.show();
+        });
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -112,7 +132,6 @@ public class foodDescription extends AppCompatActivity {
             String URL = "jdbc:mysql://webdev.bentley.edu:3306/jgiaquinto";
             String username = "jgiaquinto";
             String password = "3740";
-            Statement stmt = null;
 
             try  //create connection to database
                     (Connection con = DriverManager.getConnection(
@@ -153,7 +172,6 @@ public class foodDescription extends AppCompatActivity {
             String URL = "jdbc:mysql://webdev.bentley.edu:3306/jgiaquinto";
             String username = "jgiaquinto";
             String password = "3740";
-            Statement stmt = null;
 
             try  //create connection to database
                     (Connection con = DriverManager.getConnection(
@@ -179,11 +197,8 @@ public class foodDescription extends AppCompatActivity {
 // Process the result set as needed
                 while (result.next()) {
                     String ingredientName = result.getString("Name");
-
                     // add to array list with concatenated str
-                    String line = ingredientName;
-                    System.out.println("\n\n\n" + ingredientName + "\n\n\n");
-                    ingredientList.add(line);
+                    ingredientList.add(ingredientName);
                 }
 
             } catch (SQLException e) {
@@ -223,7 +238,7 @@ public class foodDescription extends AppCompatActivity {
             InputStream in = openFileInput("shoppingList.txt");
             InputStreamReader isr = new InputStreamReader(in);
             BufferedReader reader = new BufferedReader(isr);
-            String str = null;
+            String str;
 
             while ((str = reader.readLine()) != null) {
                 //read existing items into shoppingList str is line
@@ -252,10 +267,55 @@ public class foodDescription extends AppCompatActivity {
         }catch (IOException e){
             e.printStackTrace();
         }
-
-
     }
 
+    @Override
+    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+        this.year = String.valueOf(year);
+        if ((month / 10) >= 1){
+            this.month = String.valueOf(month);
+        }
+        else{
+            this.month = "0" + month;
+        }
+        if ((day / 10) >= 1){
+            this.day = String.valueOf(day);
+        }
+        else{
+            this.day = "0" + day;
+        }
+
+
+        TimePickerDialog timeDialog = new TimePickerDialog(this, this, 00, 00, true);
+        timeDialog.show();
+    }
+    @Override
+    public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+        if ((hour / 10) >= 1){
+            this.hour = String.valueOf(hour);
+        }
+        else{
+            this.hour = "0" + hour;
+        }
+        if ((minute / 10) >= 1){
+            this.minute = String.valueOf(minute);
+        }
+        else{
+            this.minute = "0" + minute;
+        }
+        createMeal();
+    }
+
+    public void createMeal(){
+        try (SQLHelper helper = new SQLHelper(this)) {
+            System.out.println(recipeID);
+            System.out.println(month+"-"+day+"-"+year+" "+hour+":"+minute);
+            helper.addMeal(new Meal(recipeID, LocalDateTime.parse(month+"-"+day+"-"+year+" "+hour+":"+minute, dateFormat)));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
 
 
