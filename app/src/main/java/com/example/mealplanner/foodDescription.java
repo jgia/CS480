@@ -12,6 +12,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -65,6 +71,9 @@ public class foodDescription extends AppCompatActivity {
             // put name into widget
             title.setText(name);
             description.setText(descriptionStr);
+            instructionsStr = fixInstructions(instructionsStr);
+            instructions.setText(instructionsStr);
+            Log.e("tag", instructionsStr);
            // Toast.makeText(foodDescription.this, instructionsStr, Toast.LENGTH_LONG).show();
          //   Toast.makeText(foodDescription.this, ingredientList.toString(), Toast.LENGTH_LONG).show();
         } catch (InterruptedException e) {
@@ -183,6 +192,69 @@ public class foodDescription extends AppCompatActivity {
             }
         }
     };
+    public String fixInstructions(String in){
+        StringBuilder sb = new StringBuilder();
+
+        // Remove the "c(" and ")" characters from the string
+        in = in.substring(2, in.length() - 2);
+
+        // Split the string into separate instructions
+        String[] instructions = in.split("\", \"");
+
+        // Loop through the instructions and add them to the string with a + \n
+        for (int i = 0; i < instructions.length; i++) {
+            String instruction = instructions[i];
+
+            // Remove any extra quotation marks
+            instruction = instruction.replace("\"", "");
+
+            // Add the instruction to the string with a + \n
+            sb.append((i + 1) + ". " + instruction + " \n");
+        }
+
+        return sb.toString();
+    }
+
+    public void saveShoppingCart(ArrayList<String> ingredientsList){
+        ArrayList<String> shoppingList = new ArrayList<>();
+        try{
+            //  connect in stream
+            //open stream for reading from file
+            InputStream in = openFileInput("shoppingList.txt");
+            InputStreamReader isr = new InputStreamReader(in);
+            BufferedReader reader = new BufferedReader(isr);
+            String str = null;
+
+            while ((str = reader.readLine()) != null) {
+                //read existing items into shoppingList str is line
+                shoppingList.add(str);
+            }
+
+            //close in stream
+            reader.close();
+
+            //Add existing items to shoppingList from ingredientsList if not already in there
+            for (String ingredient : ingredientsList) {
+                if (shoppingList.contains(ingredient)){
+                } else{
+                    shoppingList.add(ingredient);
+                }
+            }
+
+            //open out stream
+            OutputStreamWriter out = new OutputStreamWriter(openFileOutput("shoppingList.txt", MODE_PRIVATE));
+            out.write("");
+            for (String item : shoppingList){
+                out.write(item + "\n");
+            }
+
+            //write all list items to data
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+
+    }
 
 }
 
