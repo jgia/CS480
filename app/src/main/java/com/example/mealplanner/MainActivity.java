@@ -21,8 +21,8 @@ import java.time.format.DateTimeFormatter;
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private ArrayList<Meal> meals = new ArrayList<>();
     private final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");
-    private String dateStr;
-    private int recipeID;
+    private String dateStr = "";
+    private int recipeID = -1;
     private ArrayAdapter<Meal> adapt;
 
     @Override
@@ -64,6 +64,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 deleteMeal();
             } else {
                 Toast toast = Toast.makeText(getApplicationContext(), "Nothing selected to delete!", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
+
+        Button recipe_button = findViewById(R.id.recipe_button);
+        recipe_button.setOnClickListener(view -> {
+            if (recipeID != -1) {
+                Intent intent = new Intent(MainActivity.this, foodDescription.class);
+                intent.putExtra("recipe_id", recipeID);
+                startActivity(intent);
+            } else {
+                Toast toast = Toast.makeText(getApplicationContext(), "You must select a meal to view the recipe!", Toast.LENGTH_SHORT);
                 toast.show();
             }
         });

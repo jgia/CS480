@@ -127,6 +127,7 @@ public class foodDescription extends AppCompatActivity {
                     name = result.getString("Name");
                     descriptionStr = result.getString("Description");
                     instructionsStr = result.getString("RecipeInstructions");
+                    System.out.println(instructionsStr);
                 }
 
 
@@ -151,7 +152,7 @@ public class foodDescription extends AppCompatActivity {
                             username,
                             password)) {
                 // using recipeID (str), used prepared statement to make jdbc call
-                String query = "SELECT i.Name, ri.Quantity " +
+                String query = "SELECT i.Name " +
                         "FROM jgiaquinto.recipe_ingredient ri " +
                         "JOIN jgiaquinto.ingredient i ON ri.IngredientID = i.IngredientID " +
                         "WHERE ri.RecipeID = ?";
@@ -169,10 +170,10 @@ public class foodDescription extends AppCompatActivity {
 // Process the result set as needed
                 while (result.next()) {
                     String ingredientName = result.getString("Name");
-                    String quantity = Double.toString(result.getDouble("Quantity"));
 
                     // add to array list with concatenated str
-                    String line = "Item: " + ingredientName + ", Quantity: " + quantity;
+                    String line = ingredientName;
+                    System.out.println("\n\n\n" + ingredientName + "\n\n\n");
                     ingredientList.add(line);
                 }
 
