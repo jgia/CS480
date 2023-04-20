@@ -15,14 +15,12 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
-    private final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");
+    public final static DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");
     private String dateStr = "";
     private int recipeID = -1;
-
     public static ArrayList<Meal> meals = new ArrayList<>();
     public static ArrayAdapter<Meal> adapt;
 
@@ -38,6 +36,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         // The weeklyMealsList ListView is based off the the meals ArrayList
         adapt = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, meals);
         weeklyMealsList.setAdapter(adapt);
+
+        // Load the meals that may have been left over from the last time the app was used
+        try (SQLHelper helper = new SQLHelper(this)) {
+            meals = helper.getMealList();
+
+            if (!meals.isEmpty()) {
+                MainActivity.adapt.clear();
+                MainActivity.adapt.addAll(MainActivity.meals);
+                MainActivity.adapt.notifyDataSetChanged();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         Button delete_button = findViewById(R.id.delete_button);
         delete_button.setOnClickListener(view -> {

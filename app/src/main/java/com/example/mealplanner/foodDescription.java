@@ -28,11 +28,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class foodDescription extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
-    private final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");
     private TextView title;
     private TextView description;
     private TextView instructions;
@@ -81,8 +79,6 @@ public class foodDescription extends AppCompatActivity implements DatePickerDial
             instructionsStr = fixInstructions(instructionsStr);
             instructions.setText(instructionsStr);
             Log.e("tag", instructionsStr);
-            // Toast.makeText(foodDescription.this, instructionsStr, Toast.LENGTH_LONG).show();
-            //   Toast.makeText(foodDescription.this, ingredientList.toString(), Toast.LENGTH_LONG).show();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -228,7 +224,7 @@ public class foodDescription extends AppCompatActivity implements DatePickerDial
             instruction = instruction.replace("\"", "");
 
             // Add the instruction to the string with a + \n
-            sb.append((i + 1) + ". " + instruction + " \n");
+            sb.append(i + 1).append(". ").append(instruction).append(" \n");
         }
 
         return sb.toString();
@@ -254,8 +250,7 @@ public class foodDescription extends AppCompatActivity implements DatePickerDial
 
             //Add existing items to shoppingList from ingredientsList if not already in there
             for (String ingredient : ingredientsList) {
-                if (shoppingList.contains(ingredient)) {
-                } else {
+                if (!shoppingList.contains(ingredient)) {
                     shoppingList.add(ingredient);
                 }
             }
@@ -277,9 +272,9 @@ public class foodDescription extends AppCompatActivity implements DatePickerDial
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
         this.year = String.valueOf(year);
         if ((month / 10) >= 1) {
-            this.month = String.valueOf(month+1); // For whatever reason, month is always 1 less than it should be (e.g., April will be month 3 by default)
+            this.month = String.valueOf(month + 1); // For whatever reason, month is always 1 less than it should be (e.g., April will be month 3 by default)
         } else {
-            this.month = "0" + (month+1);
+            this.month = "0" + (month + 1);
         }
         if ((day / 10) >= 1) {
             this.day = String.valueOf(day);
@@ -309,7 +304,7 @@ public class foodDescription extends AppCompatActivity implements DatePickerDial
 
     public void createMeal() {
         try (SQLHelper helper = new SQLHelper(this)) {
-            helper.addMeal(new Meal(recipeID, LocalDateTime.parse(month + "-" + day + "-" + year + " " + hour + ":" + minute, dateFormat)));
+            helper.addMeal(new Meal(recipeID, LocalDateTime.parse(month + "-" + day + "-" + year + " " + hour + ":" + minute, MainActivity.dateFormat)));
 
             // Update the meals ArrayList with the new meal from the database
             MainActivity.meals = helper.getMealList();

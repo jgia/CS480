@@ -83,8 +83,8 @@ public class SQLHelper extends SQLiteOpenHelper {
     // Delete meal from database
     public void deleteMeal(int recipeID, String dateStr) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_NAME, KEY_RECIPE + "=? AND " + KEY_DATETIME +  "=?", new String[]{String.valueOf(recipeID),dateStr});
-        Log.d("SQLiteDemo","item deleted");
+        db.delete(TABLE_NAME, KEY_RECIPE + "=? AND " + KEY_DATETIME + "=?", new String[]{String.valueOf(recipeID), dateStr});
+        Log.d("SQLiteDemo", "item deleted");
         db.close();
     }
 
@@ -101,9 +101,8 @@ public class SQLHelper extends SQLiteOpenHelper {
         LocalDateTime saturdayDateTime = saturdayDate.atTime(23, 59); // Set the time to 23:59
 
         // The SQLLite query will use a date format of yyyy-MM-dd for for selecting within a date range
-        DateTimeFormatter queryDateFormat = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");
-        String stringSundayDate = queryDateFormat.format(sundayDateTime);
-        String stringSaturdayDate = queryDateFormat.format(saturdayDateTime);
+        String stringSundayDate = MainActivity.dateFormat.format(sundayDateTime);
+        String stringSaturdayDate = MainActivity.dateFormat.format(saturdayDateTime);
         // We want to select only meals that are between Sunday and Saturday of the current week
         String selection = KEY_DATETIME + " BETWEEN ? AND ?";
         String[] selectionArgs = {stringSundayDate, stringSaturdayDate};
@@ -114,7 +113,6 @@ public class SQLHelper extends SQLiteOpenHelper {
 
         // Write contents of the cursor to mealList
         ArrayList<Meal> mealList = new ArrayList<>();
-        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");
         if (cursor != null && cursor.moveToFirst()) { // Ensure the cursor is not null
             do {
                 int recipeIndex = cursor.getColumnIndex(KEY_RECIPE);
@@ -123,7 +121,7 @@ public class SQLHelper extends SQLiteOpenHelper {
                 if (recipeIndex != -1 && datetimeIndex != -1) { // Resolves the error "Value must be ≥ 0 but `getColumnIndex` can be -1" on cursor.getColumnIndex(KEY_RECIPE)
                     int recipe = cursor.getInt(recipeIndex);
                     String textDate = cursor.getString(datetimeIndex);
-                    LocalDateTime date = LocalDateTime.parse(textDate, dateFormat);
+                    LocalDateTime date = LocalDateTime.parse(textDate, MainActivity.dateFormat);
                     mealList.add(new Meal(recipe, date));
                 }
             } while (cursor.moveToNext());
