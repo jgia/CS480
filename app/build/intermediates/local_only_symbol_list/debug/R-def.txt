@@ -17,6 +17,7 @@ id checkBox
 id datePicker
 id delete_button
 id enterText
+id floater_button
 id food_description
 id food_name
 id home
@@ -24,13 +25,13 @@ id ingredients_list
 id ingredients_title
 id instructions
 id instructions_title
-id list_view_1
-id map
 id meal_button
 id nearby
 id recipe_button
 id recipes
+id remove_button
 id searchButton
+id search_box
 id shopping
 id slist_button
 id textInstruct
@@ -38,6 +39,7 @@ id title
 id tv_recipe_duration
 id tv_recipe_name
 id txtName
+id update_button
 id weeklyMeals
 layout activity_main
 layout activity_search_meals
