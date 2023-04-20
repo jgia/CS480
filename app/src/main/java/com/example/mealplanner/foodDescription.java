@@ -7,9 +7,13 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -29,8 +33,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Locale;
 
-public class foodDescription extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+public class foodDescription extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, AdapterView.OnItemClickListener {
     private TextView title;
     private TextView description;
     private TextView instructions;
@@ -40,6 +45,7 @@ public class foodDescription extends AppCompatActivity implements DatePickerDial
     ArrayAdapter<String> adapter;
     private String name, descriptionStr, instructionsStr;
     private String month, day, year, hour, minute;
+    private TextToSpeech speaker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +66,33 @@ public class foodDescription extends AppCompatActivity implements DatePickerDial
         ingredientList = new ArrayList<>();
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, ingredientList);
         ingredients.setAdapter(adapter);
+        ingredients.setOnItemClickListener(this);
+
+        //set up speaker
+        speaker = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int i) {
+                // status can be either TextToSpeech.SUCCESS or TextToSpeech.ERROR.
+                if (i == TextToSpeech.SUCCESS) {
+                    // Set preferred language to US english.
+                    // If a language is not be available, the result will indicate it.
+                    int result = speaker.setLanguage(Locale.US);
+                    //int result = speaker.setLanguage(Locale.ITALY);
+
+                    if (result == TextToSpeech.LANG_MISSING_DATA ||
+                            result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        // Language data is missing or the language is not supported.
+                        Log.e("tts", "Language is not available.");
+                    } else {
+                        // The TTS engine has been successfully initialized
+                        Log.i("tts", "TTS Initialization successful.");
+                    }
+                } else {
+                    // Initialization failed.
+                    Log.e("tts", "Could not initialize TextToSpeech.");
+                }
+            }
+        });
 
         //thread for getting all widgets data from sql query with recipe ID
         Thread t1 = new Thread(ingredientData);
@@ -95,6 +128,11 @@ public class foodDescription extends AppCompatActivity implements DatePickerDial
             dateDialog.show();
         });
 
+    }
+    public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+        // speak the item
+        String text = ingredientList.get(position);
+        speak(text);
     }
 
     @Override
@@ -267,6 +305,19 @@ public class foodDescription extends AppCompatActivity implements DatePickerDial
             e.printStackTrace();
         }
     }
+    public void speak(String output){
+        speaker.speak(output, TextToSpeech.QUEUE_FLUSH, null, "Id 0");
+    }
+    public void onDestroy(){
+
+        // shut down TTS engine
+        if(speaker != null){
+            speaker.stop();
+            speaker.shutdown();
+        }
+        super.onDestroy();
+    }
+
 
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
