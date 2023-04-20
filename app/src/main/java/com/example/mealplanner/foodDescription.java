@@ -31,7 +31,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-public class foodDescription extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
+public class foodDescription extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     private final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");
     private TextView title;
     private TextView description;
@@ -81,8 +81,8 @@ public class foodDescription extends AppCompatActivity implements DatePickerDial
             instructionsStr = fixInstructions(instructionsStr);
             instructions.setText(instructionsStr);
             Log.e("tag", instructionsStr);
-           // Toast.makeText(foodDescription.this, instructionsStr, Toast.LENGTH_LONG).show();
-         //   Toast.makeText(foodDescription.this, ingredientList.toString(), Toast.LENGTH_LONG).show();
+            // Toast.makeText(foodDescription.this, instructionsStr, Toast.LENGTH_LONG).show();
+            //   Toast.makeText(foodDescription.this, ingredientList.toString(), Toast.LENGTH_LONG).show();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -95,16 +95,18 @@ public class foodDescription extends AppCompatActivity implements DatePickerDial
             int currentDay = now.getDayOfMonth();
             System.out.println(currentYear + " " + currentMonth + " " + currentDay);
 
-            DatePickerDialog dateDialog = new DatePickerDialog(this, this, currentYear, currentMonth-1, currentDay);
+            DatePickerDialog dateDialog = new DatePickerDialog(this, this, currentYear, currentMonth - 1, currentDay);
             dateDialog.show();
         });
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
+
     @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -126,6 +128,7 @@ public class foodDescription extends AppCompatActivity implements DatePickerDial
                 return super.onOptionsItemSelected(item);
         }
     }
+
     Runnable mealData = new Runnable() {
         @Override
         public void run() {
@@ -163,7 +166,7 @@ public class foodDescription extends AppCompatActivity implements DatePickerDial
                 e.printStackTrace();
                 Log.d("TAG", e.toString());
             }
-            }
+        }
     };
 
     Runnable ingredientData = new Runnable() {
@@ -207,7 +210,8 @@ public class foodDescription extends AppCompatActivity implements DatePickerDial
             }
         }
     };
-    public String fixInstructions(String in){
+
+    public String fixInstructions(String in) {
         StringBuilder sb = new StringBuilder();
 
         // Remove the "c(" and ")" characters from the string
@@ -230,9 +234,9 @@ public class foodDescription extends AppCompatActivity implements DatePickerDial
         return sb.toString();
     }
 
-    public void saveShoppingCart(ArrayList<String> ingredientsList){
+    public void saveShoppingCart(ArrayList<String> ingredientsList) {
         ArrayList<String> shoppingList = new ArrayList<>();
-        try{
+        try {
             //  connect in stream
             //open stream for reading from file
             InputStream in = openFileInput("shoppingList.txt");
@@ -250,8 +254,8 @@ public class foodDescription extends AppCompatActivity implements DatePickerDial
 
             //Add existing items to shoppingList from ingredientsList if not already in there
             for (String ingredient : ingredientsList) {
-                if (shoppingList.contains(ingredient)){
-                } else{
+                if (shoppingList.contains(ingredient)) {
+                } else {
                     shoppingList.add(ingredient);
                 }
             }
@@ -259,12 +263,12 @@ public class foodDescription extends AppCompatActivity implements DatePickerDial
             //open out stream
             OutputStreamWriter out = new OutputStreamWriter(openFileOutput("shoppingList.txt", MODE_PRIVATE));
             out.write("");
-            for (String item : shoppingList){
+            for (String item : shoppingList) {
                 out.write(item + "\n");
             }
 
             //write all list items to data
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -272,16 +276,14 @@ public class foodDescription extends AppCompatActivity implements DatePickerDial
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
         this.year = String.valueOf(year);
-        if ((month / 10) >= 1){
-            this.month = String.valueOf(month);
+        if ((month / 10) >= 1) {
+            this.month = String.valueOf(month+1); // For whatever reason, month is always 1 less than it should be (e.g., April will be month 3 by default)
+        } else {
+            this.month = "0" + (month+1);
         }
-        else{
-            this.month = "0" + month;
-        }
-        if ((day / 10) >= 1){
+        if ((day / 10) >= 1) {
             this.day = String.valueOf(day);
-        }
-        else{
+        } else {
             this.day = "0" + day;
         }
 
@@ -289,41 +291,34 @@ public class foodDescription extends AppCompatActivity implements DatePickerDial
         TimePickerDialog timeDialog = new TimePickerDialog(this, this, 00, 00, true);
         timeDialog.show();
     }
+
     @Override
     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-        if ((hour / 10) >= 1){
+        if ((hour / 10) >= 1) {
             this.hour = String.valueOf(hour);
-        }
-        else{
+        } else {
             this.hour = "0" + hour;
         }
-        if ((minute / 10) >= 1){
+        if ((minute / 10) >= 1) {
             this.minute = String.valueOf(minute);
-        }
-        else{
+        } else {
             this.minute = "0" + minute;
         }
         createMeal();
     }
 
-    public void createMeal(){
+    public void createMeal() {
         try (SQLHelper helper = new SQLHelper(this)) {
-            System.out.println(recipeID);
-            System.out.println(month+"-"+day+"-"+year+" "+hour+":"+minute);
-            helper.addMeal(new Meal(recipeID, LocalDateTime.parse(month+"-"+day+"-"+year+" "+hour+":"+minute, dateFormat)));
+            helper.addMeal(new Meal(recipeID, LocalDateTime.parse(month + "-" + day + "-" + year + " " + hour + ":" + minute, dateFormat)));
 
+            // Update the meals ArrayList with the new meal from the database
+            MainActivity.meals = helper.getMealList();
+
+            MainActivity.adapt.clear();
+            MainActivity.adapt.addAll(MainActivity.meals);
+            MainActivity.adapt.notifyDataSetChanged();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 }
-
-
-
-
-
-
-
-
-
-

@@ -19,11 +19,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
-    private ArrayList<Meal> meals = new ArrayList<>();
     private final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");
     private String dateStr = "";
     private int recipeID = -1;
-    private ArrayAdapter<Meal> adapt;
+
+    public static ArrayList<Meal> meals = new ArrayList<>();
+    public static ArrayAdapter<Meal> adapt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,26 +38,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         // The weeklyMealsList ListView is based off the the meals ArrayList
         adapt = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, meals);
         weeklyMealsList.setAdapter(adapt);
-
-        // SQLITE
-        try (SQLHelper helper = new SQLHelper(this)) {
-            // Drop the existing table in the SQLite database and recreate it
-            helper.dropTable();
-
-            // Insert 2 test meals into the SQLite database
-            helper.addMeal(new Meal(38, LocalDateTime.parse("04-17-2023 15:23", dateFormat)));
-            helper.addMeal(new Meal(39, LocalDateTime.parse("04-18-2023 15:23", dateFormat)));
-
-            // Query the SQLite database to get the list of meals
-            meals = helper.getMealList();
-
-            // Update the weeklyMealsList adapter with meals from databases
-            adapt.clear();
-            adapt.addAll(meals);
-            adapt.notifyDataSetChanged();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         Button delete_button = findViewById(R.id.delete_button);
         delete_button.setOnClickListener(view -> {
@@ -136,5 +117,4 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             e.printStackTrace();
         }
     }
-
 }
