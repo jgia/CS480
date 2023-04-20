@@ -15,15 +15,14 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
-    private ArrayList<Meal> meals = new ArrayList<>();
-    private final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");
+    public final static DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");
     private String dateStr = "";
     private int recipeID = -1;
-    private ArrayAdapter<Meal> adapt;
+    public static ArrayList<Meal> meals = new ArrayList<>();
+    public static ArrayAdapter<Meal> adapt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,22 +37,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         adapt = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, meals);
         weeklyMealsList.setAdapter(adapt);
 
-        // SQLITE
+        // Load the meals that may have been left over from the last time the app was used
         try (SQLHelper helper = new SQLHelper(this)) {
-            // Drop the existing table in the SQLite database and recreate it
-            helper.dropTable();
-
-            // Insert 2 test meals into the SQLite database
-            helper.addMeal(new Meal(38, LocalDateTime.parse("04-17-2023 15:23", dateFormat)));
-            helper.addMeal(new Meal(39, LocalDateTime.parse("04-18-2023 15:23", dateFormat)));
-
-            // Query the SQLite database to get the list of meals
             meals = helper.getMealList();
 
-            // Update the weeklyMealsList adapter with meals from databases
-            adapt.clear();
-            adapt.addAll(meals);
-            adapt.notifyDataSetChanged();
+            if (!meals.isEmpty()) {
+                MainActivity.adapt.clear();
+                MainActivity.adapt.addAll(MainActivity.meals);
+                MainActivity.adapt.notifyDataSetChanged();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -136,5 +128,4 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             e.printStackTrace();
         }
     }
-
 }
