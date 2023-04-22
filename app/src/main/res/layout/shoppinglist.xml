@@ -7,13 +7,15 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/search_box"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/shopping_list"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Search ingredients"
-            android:autofillHints="search"
-            android:inputType="text"/>
+            android:text="Shopping List"
+            android:textSize="24sp"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="16dp"/>
 
 
         <LinearLayout

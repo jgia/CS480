@@ -7,10 +7,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.Animation;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.TranslateAnimation;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -33,7 +38,18 @@ public class viewShoppingList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.shoppinglist);
 
-        EditText searchBox = findViewById(R.id.search_box);
+        TextView shoppingListview = findViewById(R.id.shopping_list);
+        Animation animation = new TranslateAnimation(
+                Animation.RELATIVE_TO_SELF, -1.0f,
+                Animation.RELATIVE_TO_SELF, 2.5f,
+                Animation.RELATIVE_TO_SELF, 0.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f);
+        animation.setDuration(3500);
+        animation.setInterpolator(new LinearInterpolator());
+        animation.setRepeatCount(Animation.INFINITE);
+        animation.setRepeatMode(Animation.RESTART);
+
+        shoppingListview.startAnimation(animation);
         Button updateButton = findViewById(R.id.update_button);
         Button removeButton = findViewById(R.id.remove_button);
         ListView ingredientsList = findViewById(R.id.ingredients_list);
@@ -86,7 +102,7 @@ public class viewShoppingList extends AppCompatActivity {
             String[] keyValue = s.split("=");
             String ingredient = keyValue[0];
             String count = keyValue[1];
-            shoppingList.add(ingredient + " x" + count);
+            shoppingList.add(ingredient);
         }
         return shoppingList;
     }

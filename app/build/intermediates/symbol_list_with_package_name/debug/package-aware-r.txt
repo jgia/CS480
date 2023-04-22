@@ -3019,6 +3019,7 @@ id graph_wrap
 id group_divider
 id grouping
 id groups
+id halfHourReminder
 id header_title
 id hideable
 id home
@@ -3138,6 +3139,7 @@ id notification_main_column_container
 id off
 id on
 id onInterceptTouchReturnSwipe
+id oneHourReminder
 id outline
 id outward
 id overshoot
@@ -3163,6 +3165,7 @@ id ratio
 id recipe_button
 id recipes
 id rectangles
+id reminder_button
 id remove_button
 id reverseSawtooth
 id right
@@ -3185,7 +3188,6 @@ id searchButton
 id search_badge
 id search_bar
 id search_bar_text_view
-id search_box
 id search_button
 id search_close_btn
 id search_edit_frame
@@ -3213,11 +3215,13 @@ id selection_type
 id sharedValueSet
 id sharedValueUnset
 id shopping
+id shopping_list
 id shortcut
 id showCustom
 id showHome
 id showTitle
 id sin
+id sixHourReminder
 id skipCollapsed
 id skipped
 id slide
@@ -3282,6 +3286,7 @@ id textinput_helper_text
 id textinput_placeholder
 id textinput_prefix_text
 id textinput_suffix_text
+id threeHourReminder
 id time
 id title
 id titleDividerNoCustom
@@ -3512,9 +3517,14 @@ layout select_dialog_singlechoice_material
 layout shoppinglist
 layout support_simple_spinner_dropdown_item
 menu menu
+menu reminder_menu
 mipmap ic_launcher
 mipmap ic_launcher_round
 plurals mtrl_badge_content_description
+string _1_hour_before
+string _30_minutes_before
+string _3_hours_before
+string _6_hours_before
 string abc_action_bar_home_description
 string abc_action_bar_up_description
 string abc_action_menu_overflow_description
@@ -3669,6 +3679,7 @@ string search_menu_title
 string searchbar_scrolling_view_behavior
 string searchview_clear_text_content_description
 string searchview_navigation_content_description
+string set_reminder
 string side_sheet_accessibility_pane_title
 string side_sheet_behavior
 string status_bar_notification_info_overflow

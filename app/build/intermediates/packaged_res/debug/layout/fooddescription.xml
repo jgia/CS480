@@ -1,91 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 
-    <LinearLayout
-        android:id="@+id/buttons"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:orientation="horizontal">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/slist_button"
+        <LinearLayout
+            android:id="@+id/buttons"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add ingredients to Shopping List"
-            android:layout_marginEnd="10dp"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/meal_button"
-            android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/slist_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add ingredients to Shopping List"
+                android:layout_marginEnd="10dp"
+                style="?android:attr/buttonBarButtonStyle" />
+
+            <Button
+                android:id="@+id/meal_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Create Meal"
+                style="?android:attr/buttonBarButtonStyle" />
+
+        </LinearLayout>
+
+        <!-- TextView for food name -->
+        <TextView
+            android:id="@+id/food_name"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Create Meal"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:text="Food Name"
+            android:textSize="24sp"
+            android:textStyle="bold"/>
 
+        <!-- TextView for food description -->
+        <TextView
+            android:id="@+id/food_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Food Description (2-3 sentences)"
+            android:textSize="16sp"/>
+
+        <!-- TextView for instructions -->
+        <TextView
+            android:id="@+id/instructions_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Instructions:"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:paddingTop="16dp"/>
+
+        <TextView
+            android:id="@+id/instructions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Instructions"
+            android:textSize="16sp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingTop="16dp">
+
+            <Button
+                android:id="@+id/email_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email Recipe"
+                style="?android:attr/buttonBarButtonStyle" />
+
+            <Button
+                android:id="@+id/sms_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Text Recipe"
+                android:layout_marginStart="16dp"
+                style="?android:attr/buttonBarButtonStyle" />
+
+        </LinearLayout>
+
+        <!-- TextView for ingredients title -->
+        <TextView
+            android:id="@+id/ingredients_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ingredients:"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:paddingTop="16dp"/>
+
+        <!-- ListView for ingredients -->
+        <ListView
+            android:id="@+id/ingredients_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:dividerHeight="0dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp" />
+
+        <EditText
+            android:id="@+id/datePicker"
+            android:layout_width="300dp"
+            android:layout_height="48dp"/>
     </LinearLayout>
-
-    <!-- TextView for food name -->
-    <TextView
-        android:id="@+id/food_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Food Name"
-        android:textSize="24sp"
-        android:textStyle="bold"/>
-
-    <!-- TextView for food description -->
-    <TextView
-        android:id="@+id/food_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Food Description (2-3 sentences)"
-        android:textSize="16sp"/>
-
-    <!-- TextView for instructions -->
-    <TextView
-        android:id="@+id/instructions_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Instructions:"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:paddingTop="16dp"/>
-
-    <TextView
-        android:id="@+id/instructions"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Instructions"
-        android:textSize="16sp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"/>
-
-    <!-- TextView for ingredients title -->
-    <TextView
-        android:id="@+id/ingredients_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Ingredients:"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:paddingTop="16dp"/>
-
-    <!-- ListView for ingredients -->
-    <ListView
-        android:id="@+id/ingredients_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:dividerHeight="0dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"/>
-
-    <EditText
-        android:id="@+id/datePicker"
-        android:layout_width="300dp"
-        android:layout_height="48dp"/>
-</LinearLayout>
+</ScrollView>
