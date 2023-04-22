@@ -6,116 +6,119 @@
 6
 7    <uses-sdk
 8        android:minSdkVersion="26"
-8-->D:\shopping\app\src\main\AndroidManifest.xml
+8-->C:\Users\johnr\AndroidStudioProjects\MealPlanner\app\src\main\AndroidManifest.xml
 9        android:targetSdkVersion="33" />
-9-->D:\shopping\app\src\main\AndroidManifest.xml
+9-->C:\Users\johnr\AndroidStudioProjects\MealPlanner\app\src\main\AndroidManifest.xml
 10
 11    <queries>
-11-->D:\shopping\app\src\main\AndroidManifest.xml:4:5-8:15
+11-->C:\Users\johnr\AndroidStudioProjects\MealPlanner\app\src\main\AndroidManifest.xml:4:5-8:15
 12        <intent>
-12-->D:\shopping\app\src\main\AndroidManifest.xml:5:9-7:18
+12-->C:\Users\johnr\AndroidStudioProjects\MealPlanner\app\src\main\AndroidManifest.xml:5:9-7:18
 13            <action android:name="android.intent.action.TTS_SERVICE" />
-13-->D:\shopping\app\src\main\AndroidManifest.xml:6:13-72
-13-->D:\shopping\app\src\main\AndroidManifest.xml:6:21-69
+13-->C:\Users\johnr\AndroidStudioProjects\MealPlanner\app\src\main\AndroidManifest.xml:6:13-72
+13-->C:\Users\johnr\AndroidStudioProjects\MealPlanner\app\src\main\AndroidManifest.xml:6:21-69
 14        </intent>
 15    </queries>
 16
 17    <uses-permission android:name="android.permission.INTERNET" />
-17-->D:\shopping\app\src\main\AndroidManifest.xml:9:5-67
-17-->D:\shopping\app\src\main\AndroidManifest.xml:9:22-64
+17-->C:\Users\johnr\AndroidStudioProjects\MealPlanner\app\src\main\AndroidManifest.xml:9:5-67
+17-->C:\Users\johnr\AndroidStudioProjects\MealPlanner\app\src\main\AndroidManifest.xml:9:22-64
 18    <uses-permission android:name="android.permission.INTERNET" />
-18-->D:\shopping\app\src\main\AndroidManifest.xml:9:5-67
-18-->D:\shopping\app\src\main\AndroidManifest.xml:9:22-64
-19
-20    <permission
-20-->[androidx.core:core:1.9.0] C:\Users\nab\.gradle\caches\transforms-3\85625968673fb9fd8db34217596f6efd\transformed\core-1.9.0\AndroidManifest.xml:22:5-24:47
-21        android:name="com.example.mealplanner.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
-21-->[androidx.core:core:1.9.0] C:\Users\nab\.gradle\caches\transforms-3\85625968673fb9fd8db34217596f6efd\transformed\core-1.9.0\AndroidManifest.xml:23:9-81
-22        android:protectionLevel="signature" />
-22-->[androidx.core:core:1.9.0] C:\Users\nab\.gradle\caches\transforms-3\85625968673fb9fd8db34217596f6efd\transformed\core-1.9.0\AndroidManifest.xml:24:9-44
-23
-24    <uses-permission android:name="com.example.mealplanner.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
-24-->[androidx.core:core:1.9.0] C:\Users\nab\.gradle\caches\transforms-3\85625968673fb9fd8db34217596f6efd\transformed\core-1.9.0\AndroidManifest.xml:26:5-97
-24-->[androidx.core:core:1.9.0] C:\Users\nab\.gradle\caches\transforms-3\85625968673fb9fd8db34217596f6efd\transformed\core-1.9.0\AndroidManifest.xml:26:22-94
-25
-26    <application
-26-->D:\shopping\app\src\main\AndroidManifest.xml:10:5-38:19
-27        android:allowBackup="true"
-27-->D:\shopping\app\src\main\AndroidManifest.xml:11:9-35
-28        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-28-->[androidx.core:core:1.9.0] C:\Users\nab\.gradle\caches\transforms-3\85625968673fb9fd8db34217596f6efd\transformed\core-1.9.0\AndroidManifest.xml:28:18-86
-29        android:dataExtractionRules="@xml/data_extraction_rules"
-29-->D:\shopping\app\src\main\AndroidManifest.xml:12:9-65
-30        android:debuggable="true"
-31        android:extractNativeLibs="false"
-32        android:fullBackupContent="@xml/backup_rules"
-32-->D:\shopping\app\src\main\AndroidManifest.xml:13:9-54
-33        android:icon="@mipmap/ic_launcher"
-33-->D:\shopping\app\src\main\AndroidManifest.xml:14:9-43
-34        android:label="@string/app_name"
-34-->D:\shopping\app\src\main\AndroidManifest.xml:15:9-41
-35        android:supportsRtl="true"
-35-->D:\shopping\app\src\main\AndroidManifest.xml:16:9-35
-36        android:testOnly="true"
-37        android:theme="@style/Theme.MealPlanner" >
-37-->D:\shopping\app\src\main\AndroidManifest.xml:17:9-49
-38        <activity
-38-->D:\shopping\app\src\main\AndroidManifest.xml:20:9-22:40
-39            android:name="com.example.mealplanner.viewShoppingList"
-39-->D:\shopping\app\src\main\AndroidManifest.xml:21:13-45
-40            android:exported="false" />
-40-->D:\shopping\app\src\main\AndroidManifest.xml:22:13-37
-41        <activity
-41-->D:\shopping\app\src\main\AndroidManifest.xml:23:9-25:40
-42            android:name="com.example.mealplanner.foodDescription"
-42-->D:\shopping\app\src\main\AndroidManifest.xml:24:13-44
-43            android:exported="false" />
-43-->D:\shopping\app\src\main\AndroidManifest.xml:25:13-37
-44        <activity
-44-->D:\shopping\app\src\main\AndroidManifest.xml:26:9-28:40
-45            android:name="com.example.mealplanner.searchMeals"
-45-->D:\shopping\app\src\main\AndroidManifest.xml:27:13-40
-46            android:exported="false" />
-46-->D:\shopping\app\src\main\AndroidManifest.xml:28:13-37
-47        <activity
-47-->D:\shopping\app\src\main\AndroidManifest.xml:29:9-37:20
-48            android:name="com.example.mealplanner.MainActivity"
-48-->D:\shopping\app\src\main\AndroidManifest.xml:30:13-41
-49            android:exported="true" >
-49-->D:\shopping\app\src\main\AndroidManifest.xml:31:13-36
-50            <intent-filter>
-50-->D:\shopping\app\src\main\AndroidManifest.xml:32:13-36:29
-51                <action android:name="android.intent.action.MAIN" />
-51-->D:\shopping\app\src\main\AndroidManifest.xml:33:17-69
-51-->D:\shopping\app\src\main\AndroidManifest.xml:33:25-66
-52
-53                <category android:name="android.intent.category.LAUNCHER" />
-53-->D:\shopping\app\src\main\AndroidManifest.xml:35:17-77
-53-->D:\shopping\app\src\main\AndroidManifest.xml:35:27-74
-54            </intent-filter>
-55        </activity>
-56
-57        <provider
-57-->[androidx.emoji2:emoji2:1.2.0] C:\Users\nab\.gradle\caches\transforms-3\7efe218e7ae35cb58dbf86d5ee36a529\transformed\emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
-58            android:name="androidx.startup.InitializationProvider"
-58-->[androidx.emoji2:emoji2:1.2.0] C:\Users\nab\.gradle\caches\transforms-3\7efe218e7ae35cb58dbf86d5ee36a529\transformed\emoji2-1.2.0\AndroidManifest.xml:25:13-67
-59            android:authorities="com.example.mealplanner.androidx-startup"
-59-->[androidx.emoji2:emoji2:1.2.0] C:\Users\nab\.gradle\caches\transforms-3\7efe218e7ae35cb58dbf86d5ee36a529\transformed\emoji2-1.2.0\AndroidManifest.xml:26:13-68
-60            android:exported="false" >
-60-->[androidx.emoji2:emoji2:1.2.0] C:\Users\nab\.gradle\caches\transforms-3\7efe218e7ae35cb58dbf86d5ee36a529\transformed\emoji2-1.2.0\AndroidManifest.xml:27:13-37
-61            <meta-data
-61-->[androidx.emoji2:emoji2:1.2.0] C:\Users\nab\.gradle\caches\transforms-3\7efe218e7ae35cb58dbf86d5ee36a529\transformed\emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
-62                android:name="androidx.emoji2.text.EmojiCompatInitializer"
-62-->[androidx.emoji2:emoji2:1.2.0] C:\Users\nab\.gradle\caches\transforms-3\7efe218e7ae35cb58dbf86d5ee36a529\transformed\emoji2-1.2.0\AndroidManifest.xml:30:17-75
-63                android:value="androidx.startup" />
-63-->[androidx.emoji2:emoji2:1.2.0] C:\Users\nab\.gradle\caches\transforms-3\7efe218e7ae35cb58dbf86d5ee36a529\transformed\emoji2-1.2.0\AndroidManifest.xml:31:17-49
-64            <meta-data
-64-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\nab\.gradle\caches\transforms-3\7495f4090f64d34b46f8102bfc12da1e\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:31:13-33:52
-65                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-65-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\nab\.gradle\caches\transforms-3\7495f4090f64d34b46f8102bfc12da1e\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:32:17-78
-66                android:value="androidx.startup" />
-66-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\nab\.gradle\caches\transforms-3\7495f4090f64d34b46f8102bfc12da1e\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:33:17-49
-67        </provider>
-68    </application>
-69
-70</manifest>
+18-->C:\Users\johnr\AndroidStudioProjects\MealPlanner\app\src\main\AndroidManifest.xml:9:5-67
+18-->C:\Users\johnr\AndroidStudioProjects\MealPlanner\app\src\main\AndroidManifest.xml:9:22-64
+19    <uses-permission android:name="android.permission.SEND_SMS" />
+19-->C:\Users\johnr\AndroidStudioProjects\MealPlanner\app\src\main\AndroidManifest.xml:39:5-67
+19-->C:\Users\johnr\AndroidStudioProjects\MealPlanner\app\src\main\AndroidManifest.xml:39:22-64
+20
+21    <permission
+21-->[androidx.core:core:1.9.0] C:\Users\johnr\.gradle\caches\transforms-3\85625968673fb9fd8db34217596f6efd\transformed\core-1.9.0\AndroidManifest.xml:22:5-24:47
+22        android:name="com.example.mealplanner.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+22-->[androidx.core:core:1.9.0] C:\Users\johnr\.gradle\caches\transforms-3\85625968673fb9fd8db34217596f6efd\transformed\core-1.9.0\AndroidManifest.xml:23:9-81
+23        android:protectionLevel="signature" />
+23-->[androidx.core:core:1.9.0] C:\Users\johnr\.gradle\caches\transforms-3\85625968673fb9fd8db34217596f6efd\transformed\core-1.9.0\AndroidManifest.xml:24:9-44
+24
+25    <uses-permission android:name="com.example.mealplanner.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+25-->[androidx.core:core:1.9.0] C:\Users\johnr\.gradle\caches\transforms-3\85625968673fb9fd8db34217596f6efd\transformed\core-1.9.0\AndroidManifest.xml:26:5-97
+25-->[androidx.core:core:1.9.0] C:\Users\johnr\.gradle\caches\transforms-3\85625968673fb9fd8db34217596f6efd\transformed\core-1.9.0\AndroidManifest.xml:26:22-94
+26
+27    <application
+27-->C:\Users\johnr\AndroidStudioProjects\MealPlanner\app\src\main\AndroidManifest.xml:10:5-37:19
+28        android:allowBackup="true"
+28-->C:\Users\johnr\AndroidStudioProjects\MealPlanner\app\src\main\AndroidManifest.xml:11:9-35
+29        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+29-->[androidx.core:core:1.9.0] C:\Users\johnr\.gradle\caches\transforms-3\85625968673fb9fd8db34217596f6efd\transformed\core-1.9.0\AndroidManifest.xml:28:18-86
+30        android:dataExtractionRules="@xml/data_extraction_rules"
+30-->C:\Users\johnr\AndroidStudioProjects\MealPlanner\app\src\main\AndroidManifest.xml:12:9-65
+31        android:debuggable="true"
+32        android:extractNativeLibs="false"
+33        android:fullBackupContent="@xml/backup_rules"
+33-->C:\Users\johnr\AndroidStudioProjects\MealPlanner\app\src\main\AndroidManifest.xml:13:9-54
+34        android:icon="@mipmap/ic_launcher"
+34-->C:\Users\johnr\AndroidStudioProjects\MealPlanner\app\src\main\AndroidManifest.xml:14:9-43
+35        android:label="@string/app_name"
+35-->C:\Users\johnr\AndroidStudioProjects\MealPlanner\app\src\main\AndroidManifest.xml:15:9-41
+36        android:supportsRtl="true"
+36-->C:\Users\johnr\AndroidStudioProjects\MealPlanner\app\src\main\AndroidManifest.xml:16:9-35
+37        android:testOnly="true"
+38        android:theme="@style/Theme.MealPlanner" >
+38-->C:\Users\johnr\AndroidStudioProjects\MealPlanner\app\src\main\AndroidManifest.xml:17:9-49
+39        <activity
+39-->C:\Users\johnr\AndroidStudioProjects\MealPlanner\app\src\main\AndroidManifest.xml:20:9-22:40
+40            android:name="com.example.mealplanner.viewShoppingList"
+40-->C:\Users\johnr\AndroidStudioProjects\MealPlanner\app\src\main\AndroidManifest.xml:21:13-45
+41            android:exported="false" />
+41-->C:\Users\johnr\AndroidStudioProjects\MealPlanner\app\src\main\AndroidManifest.xml:22:13-37
+42        <activity
+42-->C:\Users\johnr\AndroidStudioProjects\MealPlanner\app\src\main\AndroidManifest.xml:23:9-25:40
+43            android:name="com.example.mealplanner.foodDescription"
+43-->C:\Users\johnr\AndroidStudioProjects\MealPlanner\app\src\main\AndroidManifest.xml:24:13-44
+44            android:exported="false" />
+44-->C:\Users\johnr\AndroidStudioProjects\MealPlanner\app\src\main\AndroidManifest.xml:25:13-37
+45        <activity
+45-->C:\Users\johnr\AndroidStudioProjects\MealPlanner\app\src\main\AndroidManifest.xml:26:9-28:40
+46            android:name="com.example.mealplanner.searchMeals"
+46-->C:\Users\johnr\AndroidStudioProjects\MealPlanner\app\src\main\AndroidManifest.xml:27:13-40
+47            android:exported="false" />
+47-->C:\Users\johnr\AndroidStudioProjects\MealPlanner\app\src\main\AndroidManifest.xml:28:13-37
+48        <activity
+48-->C:\Users\johnr\AndroidStudioProjects\MealPlanner\app\src\main\AndroidManifest.xml:29:9-36:20
+49            android:name="com.example.mealplanner.MainActivity"
+49-->C:\Users\johnr\AndroidStudioProjects\MealPlanner\app\src\main\AndroidManifest.xml:30:13-41
+50            android:exported="true" >
+50-->C:\Users\johnr\AndroidStudioProjects\MealPlanner\app\src\main\AndroidManifest.xml:31:13-36
+51            <intent-filter>
+51-->C:\Users\johnr\AndroidStudioProjects\MealPlanner\app\src\main\AndroidManifest.xml:32:13-35:29
+52                <action android:name="android.intent.action.MAIN" />
+52-->C:\Users\johnr\AndroidStudioProjects\MealPlanner\app\src\main\AndroidManifest.xml:33:17-69
+52-->C:\Users\johnr\AndroidStudioProjects\MealPlanner\app\src\main\AndroidManifest.xml:33:25-66
+53
+54                <category android:name="android.intent.category.LAUNCHER" />
+54-->C:\Users\johnr\AndroidStudioProjects\MealPlanner\app\src\main\AndroidManifest.xml:34:17-77
+54-->C:\Users\johnr\AndroidStudioProjects\MealPlanner\app\src\main\AndroidManifest.xml:34:27-74
+55            </intent-filter>
+56        </activity>
+57
+58        <provider
+58-->[androidx.emoji2:emoji2:1.2.0] C:\Users\johnr\.gradle\caches\transforms-3\7efe218e7ae35cb58dbf86d5ee36a529\transformed\emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
+59            android:name="androidx.startup.InitializationProvider"
+59-->[androidx.emoji2:emoji2:1.2.0] C:\Users\johnr\.gradle\caches\transforms-3\7efe218e7ae35cb58dbf86d5ee36a529\transformed\emoji2-1.2.0\AndroidManifest.xml:25:13-67
+60            android:authorities="com.example.mealplanner.androidx-startup"
+60-->[androidx.emoji2:emoji2:1.2.0] C:\Users\johnr\.gradle\caches\transforms-3\7efe218e7ae35cb58dbf86d5ee36a529\transformed\emoji2-1.2.0\AndroidManifest.xml:26:13-68
+61            android:exported="false" >
+61-->[androidx.emoji2:emoji2:1.2.0] C:\Users\johnr\.gradle\caches\transforms-3\7efe218e7ae35cb58dbf86d5ee36a529\transformed\emoji2-1.2.0\AndroidManifest.xml:27:13-37
+62            <meta-data
+62-->[androidx.emoji2:emoji2:1.2.0] C:\Users\johnr\.gradle\caches\transforms-3\7efe218e7ae35cb58dbf86d5ee36a529\transformed\emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
+63                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+63-->[androidx.emoji2:emoji2:1.2.0] C:\Users\johnr\.gradle\caches\transforms-3\7efe218e7ae35cb58dbf86d5ee36a529\transformed\emoji2-1.2.0\AndroidManifest.xml:30:17-75
+64                android:value="androidx.startup" />
+64-->[androidx.emoji2:emoji2:1.2.0] C:\Users\johnr\.gradle\caches\transforms-3\7efe218e7ae35cb58dbf86d5ee36a529\transformed\emoji2-1.2.0\AndroidManifest.xml:31:17-49
+65            <meta-data
+65-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\johnr\.gradle\caches\transforms-3\7495f4090f64d34b46f8102bfc12da1e\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:31:13-33:52
+66                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+66-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\johnr\.gradle\caches\transforms-3\7495f4090f64d34b46f8102bfc12da1e\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:32:17-78
+67                android:value="androidx.startup" />
+67-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\johnr\.gradle\caches\transforms-3\7495f4090f64d34b46f8102bfc12da1e\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:33:17-49
+68        </provider>
+69    </application>
+70
+71</manifest>

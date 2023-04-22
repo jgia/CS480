@@ -6,13 +6,13 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -27,10 +27,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -43,19 +41,13 @@ import java.util.Locale;
 import java.util.Map;
 
 public class foodDescription extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, AdapterView.OnItemClickListener {
-    private TextView title;
-    private TextView description;
-    private TextView instructions;
-    private ListView ingredients;
 
-    private Button slist_button;
     private int recipeID;
     private ArrayList<String> ingredientList;
     ArrayAdapter<String> adapter;
     private String name, descriptionStr, instructionsStr;
     private String month, day, year, hour, minute;
     private TextToSpeech speaker;
-    private final String file = "ShoppingList.txt";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,11 +60,13 @@ public class foodDescription extends AppCompatActivity implements DatePickerDial
         recipeID = intent.getIntExtra("recipe_id", 0);
 
         //pull required widgets
-        title = findViewById(R.id.food_name);
-        description = findViewById(R.id.food_description);
-        instructions = findViewById(R.id.instructions);
-        ingredients = findViewById(R.id.ingredients_list);
-        slist_button = findViewById(R.id.slist_button);
+        TextView title = findViewById(R.id.food_name);
+        TextView description = findViewById(R.id.food_description);
+        TextView instructions = findViewById(R.id.instructions);
+        ListView ingredients = findViewById(R.id.ingredients_list);
+        Button slist_button = findViewById(R.id.slist_button);
+        Button emailButton = findViewById(R.id.email_button);
+        Button smsButton = findViewById(R.id.sms_button);
 
         ingredientList = new ArrayList<>();
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, ingredientList);
@@ -80,28 +74,25 @@ public class foodDescription extends AppCompatActivity implements DatePickerDial
         ingredients.setOnItemClickListener(this);
 
         //set up speaker
-        speaker = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int i) {
-                // status can be either TextToSpeech.SUCCESS or TextToSpeech.ERROR.
-                if (i == TextToSpeech.SUCCESS) {
-                    // Set preferred language to US english.
-                    // If a language is not be available, the result will indicate it.
-                    int result = speaker.setLanguage(Locale.US);
-                    //int result = speaker.setLanguage(Locale.ITALY);
+        speaker = new TextToSpeech(this, i -> {
+            // status can be either TextToSpeech.SUCCESS or TextToSpeech.ERROR.
+            if (i == TextToSpeech.SUCCESS) {
+                // Set preferred language to US english.
+                // If a language is not be available, the result will indicate it.
+                int result = speaker.setLanguage(Locale.US);
+                //int result = speaker.setLanguage(Locale.ITALY);
 
-                    if (result == TextToSpeech.LANG_MISSING_DATA ||
-                            result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                        // Language data is missing or the language is not supported.
-                        Log.e("tts", "Language is not available.");
-                    } else {
-                        // The TTS engine has been successfully initialized
-                        Log.i("tts", "TTS Initialization successful.");
-                    }
+                if (result == TextToSpeech.LANG_MISSING_DATA ||
+                        result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                    // Language data is missing or the language is not supported.
+                    Log.e("tts", "Language is not available.");
                 } else {
-                    // Initialization failed.
-                    Log.e("tts", "Could not initialize TextToSpeech.");
+                    // The TTS engine has been successfully initialized
+                    Log.i("tts", "TTS Initialization successful.");
                 }
+            } else {
+                // Initialization failed.
+                Log.e("tts", "Could not initialize TextToSpeech.");
             }
         });
 
@@ -140,13 +131,14 @@ public class foodDescription extends AppCompatActivity implements DatePickerDial
         });
 
         //Save shopping list button call. nt
-        slist_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveShoppingCart(ingredientList);
-                Toast.makeText(getApplicationContext(), "Ingredients added to shopping list.", Toast.LENGTH_SHORT).show();
-            }
+        slist_button.setOnClickListener(v -> {
+            saveShoppingCart(ingredientList);
+            Toast.makeText(getApplicationContext(), "Ingredients added to shopping list.", Toast.LENGTH_SHORT).show();
         });
+
+        emailButton.setOnClickListener(v -> sendEmail());
+
+        smsButton.setOnClickListener(v -> sendSMS());
 
 
     }
@@ -203,14 +195,13 @@ public class foodDescription extends AppCompatActivity implements DatePickerDial
 
                 PreparedStatement pstmt = con.prepareStatement(query);
 
-// Set the input parameter for the prepared statement
-
+                // Set the input parameter for the prepared statement
                 pstmt.setInt(1, recipeID);
 
-// Execute the prepared statement
+                // Execute the prepared statement
                 ResultSet result = pstmt.executeQuery();
 
-// Process the result set as needed
+                // Process the result set as needed
                 while (result.next()) {
                     name = result.getString("Name");
                     descriptionStr = result.getString("Description");
@@ -245,16 +236,14 @@ public class foodDescription extends AppCompatActivity implements DatePickerDial
                         "WHERE ri.RecipeID = ?";
 
                 PreparedStatement pstmt = con.prepareStatement(query);
-                //Toast.makeText(foodDescription.this, Integer.toString(recipeID), Toast.LENGTH_LONG).show();
 
-// Set the input parameter for the prepared statement
-
+                // Set the input parameter for the prepared statement
                 pstmt.setInt(1, recipeID);
 
-// Execute the prepared statement
+                // Execute the prepared statement
                 ResultSet result = pstmt.executeQuery();
 
-// Process the result set as needed
+                // Process the result set as needed
                 while (result.next()) {
                     String ingredientName = result.getString("Name");
                     // add to array list with concatenated str
@@ -294,10 +283,11 @@ public class foodDescription extends AppCompatActivity implements DatePickerDial
     public void saveShoppingCart(ArrayList<String> ingredientsList) {
         try {
             // Check if file exists.
+            String file = "ShoppingList.txt";
             File shoppingListTxt = new File(getFilesDir(), file);
             boolean fileExists = shoppingListTxt.exists();
             //Hashmap to store ingredient name, plus how much you need.
-            Map<String, Integer> ingredientMap = new HashMap<String, Integer>();
+            Map<String, Integer> ingredientMap = new HashMap<>();
 
             //Read existing file into map if exists.
             if (fileExists) {
@@ -344,9 +334,6 @@ public class foodDescription extends AppCompatActivity implements DatePickerDial
             fos.close();
 
 
-
-
-
             Toast.makeText(getApplicationContext(), "Shopping list saved.", Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -355,19 +342,14 @@ public class foodDescription extends AppCompatActivity implements DatePickerDial
     }
 
 
-
-
-
-
-
-
-    public void speak(String output){
+    public void speak(String output) {
         speaker.speak(output, TextToSpeech.QUEUE_FLUSH, null, "Id 0");
     }
-    public void onDestroy(){
+
+    public void onDestroy() {
 
         // shut down TTS engine
-        if(speaker != null){
+        if (speaker != null) {
             speaker.stop();
             speaker.shutdown();
         }
@@ -378,17 +360,16 @@ public class foodDescription extends AppCompatActivity implements DatePickerDial
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
         this.year = String.valueOf(year);
-        if ((month / 10) >= 1) {
-            this.month = String.valueOf(month + 1); // For whatever reason, month is always 1 less than it should be (e.g., April will be month 3 by default)
-        } else {
-            this.month = "0" + (month + 1);
-        }
-        if ((day / 10) >= 1) {
-            this.day = String.valueOf(day);
-        } else {
-            this.day = "0" + day;
-        }
 
+        if ((month / 10) >= 1)
+            this.month = String.valueOf(month + 1); // For whatever reason, month is always 1 less than it should be (e.g., April will be month 3 by default)
+        else
+            this.month = "0" + (month + 1);
+
+        if ((day / 10) >= 1)
+            this.day = String.valueOf(day);
+        else
+            this.day = "0" + day;
 
         TimePickerDialog timeDialog = new TimePickerDialog(this, this, 00, 00, true);
         timeDialog.show();
@@ -396,16 +377,16 @@ public class foodDescription extends AppCompatActivity implements DatePickerDial
 
     @Override
     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-        if ((hour / 10) >= 1) {
+        if ((hour / 10) >= 1)
             this.hour = String.valueOf(hour);
-        } else {
+        else
             this.hour = "0" + hour;
-        }
-        if ((minute / 10) >= 1) {
+
+        if ((minute / 10) >= 1)
             this.minute = String.valueOf(minute);
-        } else {
+        else
             this.minute = "0" + minute;
-        }
+
         createMeal();
     }
 
@@ -422,5 +403,20 @@ public class foodDescription extends AppCompatActivity implements DatePickerDial
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void sendEmail() {
+        Uri uriEmail = Uri.parse("mailto:");
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, uriEmail);
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Check out this recipe!");
+        emailIntent.putExtra(Intent.EXTRA_TEXT, instructionsStr);
+        startActivity(emailIntent);
+    }
+
+    public void sendSMS() {
+        Uri uriSMS = Uri.parse("smsto:");
+        Intent smsIntent = new Intent(Intent.ACTION_SENDTO, uriSMS);
+        smsIntent.putExtra("sms_body", "Check out this recipe!\n" + instructionsStr);
+        startActivity(smsIntent);
     }
 }
