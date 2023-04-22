@@ -1,6 +1,7 @@
 package com.example.mealplanner;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -70,6 +71,30 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 Toast toast = Toast.makeText(getApplicationContext(), "You must select a meal to view the recipe!", Toast.LENGTH_SHORT);
                 toast.show();
             }
+        });
+
+        Button reminder_button = findViewById(R.id.reminder_button);
+        reminder_button.setOnClickListener(view ->{
+            // Create and expand the popup menu for setting reminders
+            PopupMenu popupMenu = new PopupMenu(this, view);
+            popupMenu.inflate(R.menu.reminder_menu);
+
+            // The popup  menu uses the items from reminder_menu.xml
+            popupMenu.setOnMenuItemClickListener(item -> {
+                switch (item.getItemId()) {
+                    case R.id.halfHourReminder:
+                        return true;
+                    case R.id.oneHourReminder:
+                        return true;
+                    case R.id.threeHourReminder:
+                        return true;
+                    case R.id.sixHourReminder:
+                        return true;
+                    default:
+                        return false;
+                }
+            });
+            popupMenu.show();
         });
     }
 

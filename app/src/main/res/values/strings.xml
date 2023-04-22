@@ -3,4 +3,9 @@
     <string name="meals_this_week">Meals This Week</string>
     <string name="delete">Delete</string>
     <string name="view_recipe">View Recipe</string>
+    <string name="set_reminder">Set Reminder</string>
+    <string name="_30_minutes_before">30 minutes before</string>
+    <string name="_1_hour_before">1 hour before</string>
+    <string name="_3_hours_before">3 hours before</string>
+    <string name="_6_hours_before">6 hours before</string>
 </resources>
