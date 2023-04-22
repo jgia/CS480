@@ -5,6 +5,7 @@ import androidx.appcompat.widget.PopupMenu;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -130,6 +132,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
         dateStr = dateFormat.format(meals.get(position).getDateTime());
         recipeID = meals.get(position).getRecipeID();
+        // Set the new selected item position and change its styling
+        TextView textView = (TextView) v.findViewById(android.R.id.text1);
+        textView.setTextColor(Color.WHITE);
+        v.setBackgroundColor(Color.BLUE);
     }
 
     public void deleteMeal() {

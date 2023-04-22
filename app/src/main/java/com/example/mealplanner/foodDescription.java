@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -48,6 +49,7 @@ public class foodDescription extends AppCompatActivity implements DatePickerDial
     private String name, descriptionStr, instructionsStr;
     private String month, day, year, hour, minute;
     private TextToSpeech speaker;
+    private ListView ingredients;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +65,7 @@ public class foodDescription extends AppCompatActivity implements DatePickerDial
         TextView title = findViewById(R.id.food_name);
         TextView description = findViewById(R.id.food_description);
         TextView instructions = findViewById(R.id.instructions);
-        ListView ingredients = findViewById(R.id.ingredients_list);
+        ingredients = findViewById(R.id.ingredients_list);
         Button slist_button = findViewById(R.id.slist_button);
         Button emailButton = findViewById(R.id.email_button);
         Button smsButton = findViewById(R.id.sms_button);
