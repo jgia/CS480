@@ -150,7 +150,7 @@ public class searchMeals extends AppCompatActivity implements AdapterView.OnItem
                 startActivity(new Intent(this, viewShoppingList.class));
                 return true;
             case R.id.nearby:
-               // startActivity(new Intent(this, viewShoppingList.class)); NEED TO ADD XML FOR THIS
+                startActivity(new Intent(this, nearbyStores.class));
                 return true;
             case R.id.home:
                 // Handle click on hidden item

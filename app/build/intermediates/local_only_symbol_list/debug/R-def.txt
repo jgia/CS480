@@ -1,5 +1,9 @@
 R_DEF: Internal format may change without notice
 local
+array com_google_android_gms_fonts_certs
+array com_google_android_gms_fonts_certs_dev
+array com_google_android_gms_fonts_certs_prod
+array preloaded_fonts
 color black
 color purple_200
 color purple_500
@@ -9,6 +13,7 @@ color teal_700
 color white
 drawable ic_launcher_background
 drawable ic_launcher_foreground
+font archivo_black
 id browse
 id browseTitle
 id button_layout
@@ -26,6 +31,8 @@ id ingredients_list
 id ingredients_title
 id instructions
 id instructions_title
+id listview
+id map
 id meal_button
 id nearby
 id oneHourReminder
@@ -48,6 +55,7 @@ layout activity_main
 layout activity_search_meals
 layout browse_meals_search
 layout fooddescription
+layout nearbystores
 layout shoppinglist
 menu menu
 menu reminder_menu
@@ -59,6 +67,7 @@ string _3_hours_before
 string _6_hours_before
 string app_name
 string delete
+string google_maps_key
 string meals_this_week
 string set_reminder
 string view_recipe
