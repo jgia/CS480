@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/halfHourReminder"
+        android:title="@string/_30_minutes_before" />
+    <item
+        android:id="@+id/oneHourReminder"
+        android:title="@string/_1_hour_before" />
+
+    <item
+        android:id="@+id/threeHourReminder"
+        android:title="@string/_3_hours_before" />
+
+    <item
+        android:id="@+id/sixHourReminder"
+        android:title="@string/_6_hours_before" />
+</menu>
