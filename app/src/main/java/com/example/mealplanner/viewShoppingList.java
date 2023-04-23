@@ -3,19 +3,23 @@ package com.example.mealplanner;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.TranslateAnimation;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -31,8 +35,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class viewShoppingList extends AppCompatActivity {
+public class viewShoppingList extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
+    private int selectedPosition;
+    private ArrayList<String> shoppingList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,18 +58,27 @@ public class viewShoppingList extends AppCompatActivity {
         shoppingListview.startAnimation(animation);
         Button updateButton = findViewById(R.id.update_button);
         Button removeButton = findViewById(R.id.remove_button);
+
         ListView ingredientsList = findViewById(R.id.ingredients_list);
+        ingredientsList.setOnItemClickListener(this);
         FloatingActionButton floater = findViewById(R.id.floater_button);
 
         //Using these two functions to edit the list view.
         //Idea behind this is that it would be easier to edit the values
         //of the list in the hashmap rather than strip the string every time
         HashMap<String, Integer> shoppingListMap = textFileToHashMap();
-        ArrayList<String> shoppingList = convertHashMapToString(shoppingListMap);
-
+        shoppingList = convertHashMapToString(shoppingListMap);
         // Set the adapter
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, shoppingList);
         ingredientsList.setAdapter(adapter);
+        removeButton.setOnClickListener(view -> {
+            if (selectedPosition != -1){
+                Toast.makeText(this, Integer.toString(selectedPosition), Toast.LENGTH_SHORT).show();
+                shoppingList.remove(selectedPosition);
+                adapter.notifyDataSetChanged();
+            }
+        });
+
     }
     //Uses the file and strips it into a HashMap.
     private HashMap<String, Integer> textFileToHashMap() {
@@ -135,4 +150,13 @@ public class viewShoppingList extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+        // selectedPosition == position
+        selectedPosition = position;
+        Toast.makeText(this, Integer.toString(selectedPosition), Toast.LENGTH_SHORT).show();
+        TextView textView = (TextView) view.findViewById(android.R.id.text1);
+        textView.setTextColor(Color.WHITE);
+        view.setBackgroundColor(Color.GREEN);
+    }
 }

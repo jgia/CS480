@@ -73,6 +73,10 @@ int animator mtrl_fab_hide_motion_spec 0x7f02001d
 int animator mtrl_fab_show_motion_spec 0x7f02001e
 int animator mtrl_fab_transformation_sheet_collapse_spec 0x7f02001f
 int animator mtrl_fab_transformation_sheet_expand_spec 0x7f020020
+int array com_google_android_gms_fonts_certs 0x7f140000
+int array com_google_android_gms_fonts_certs_dev 0x7f140001
+int array com_google_android_gms_fonts_certs_prod 0x7f140002
+int array preloaded_fonts 0x7f140003
 int attr SharedValue 0x7f030000
 int attr SharedValueId 0x7f030001
 int attr actionBarDivider 0x7f030002
@@ -2802,6 +2806,7 @@ int drawable notify_panel_notification_icon_bg 0x7f0700db
 int drawable test_level_drawable 0x7f0700dc
 int drawable tooltip_frame_dark 0x7f0700dd
 int drawable tooltip_frame_light 0x7f0700de
+int font archivo_black 0x7f150000
 int id ALT 0x7f080000
 int id BOTTOM_END 0x7f080001
 int id BOTTOM_START 0x7f080002

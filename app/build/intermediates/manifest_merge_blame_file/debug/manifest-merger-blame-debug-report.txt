@@ -27,8 +27,8 @@
 18-->/Users/johnpiscani/AndroidStudioProjects/MealPlanner/app/src/main/AndroidManifest.xml:9:5-67
 18-->/Users/johnpiscani/AndroidStudioProjects/MealPlanner/app/src/main/AndroidManifest.xml:9:22-64
 19    <uses-permission android:name="android.permission.SEND_SMS" />
-19-->/Users/johnpiscani/AndroidStudioProjects/MealPlanner/app/src/main/AndroidManifest.xml:39:5-67
-19-->/Users/johnpiscani/AndroidStudioProjects/MealPlanner/app/src/main/AndroidManifest.xml:39:22-64
+19-->/Users/johnpiscani/AndroidStudioProjects/MealPlanner/app/src/main/AndroidManifest.xml:43:5-67
+19-->/Users/johnpiscani/AndroidStudioProjects/MealPlanner/app/src/main/AndroidManifest.xml:43:22-64
 20
 21    <permission
 21-->[androidx.core:core:1.9.0] /Users/johnpiscani/.gradle/caches/transforms-3/85625968673fb9fd8db34217596f6efd/transformed/core-1.9.0/AndroidManifest.xml:22:5-24:47
@@ -42,7 +42,7 @@
 25-->[androidx.core:core:1.9.0] /Users/johnpiscani/.gradle/caches/transforms-3/85625968673fb9fd8db34217596f6efd/transformed/core-1.9.0/AndroidManifest.xml:26:22-94
 26
 27    <application
-27-->/Users/johnpiscani/AndroidStudioProjects/MealPlanner/app/src/main/AndroidManifest.xml:10:5-37:19
+27-->/Users/johnpiscani/AndroidStudioProjects/MealPlanner/app/src/main/AndroidManifest.xml:10:5-41:19
 28        android:allowBackup="true"
 28-->/Users/johnpiscani/AndroidStudioProjects/MealPlanner/app/src/main/AndroidManifest.xml:11:9-35
 29        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
@@ -98,27 +98,34 @@
 55            </intent-filter>
 56        </activity>
 57
-58        <provider
-58-->[androidx.emoji2:emoji2:1.2.0] /Users/johnpiscani/.gradle/caches/transforms-3/7efe218e7ae35cb58dbf86d5ee36a529/transformed/emoji2-1.2.0/AndroidManifest.xml:24:9-32:20
-59            android:name="androidx.startup.InitializationProvider"
-59-->[androidx.emoji2:emoji2:1.2.0] /Users/johnpiscani/.gradle/caches/transforms-3/7efe218e7ae35cb58dbf86d5ee36a529/transformed/emoji2-1.2.0/AndroidManifest.xml:25:13-67
-60            android:authorities="com.example.mealplanner.androidx-startup"
-60-->[androidx.emoji2:emoji2:1.2.0] /Users/johnpiscani/.gradle/caches/transforms-3/7efe218e7ae35cb58dbf86d5ee36a529/transformed/emoji2-1.2.0/AndroidManifest.xml:26:13-68
-61            android:exported="false" >
-61-->[androidx.emoji2:emoji2:1.2.0] /Users/johnpiscani/.gradle/caches/transforms-3/7efe218e7ae35cb58dbf86d5ee36a529/transformed/emoji2-1.2.0/AndroidManifest.xml:27:13-37
-62            <meta-data
-62-->[androidx.emoji2:emoji2:1.2.0] /Users/johnpiscani/.gradle/caches/transforms-3/7efe218e7ae35cb58dbf86d5ee36a529/transformed/emoji2-1.2.0/AndroidManifest.xml:29:13-31:52
-63                android:name="androidx.emoji2.text.EmojiCompatInitializer"
-63-->[androidx.emoji2:emoji2:1.2.0] /Users/johnpiscani/.gradle/caches/transforms-3/7efe218e7ae35cb58dbf86d5ee36a529/transformed/emoji2-1.2.0/AndroidManifest.xml:30:17-75
-64                android:value="androidx.startup" />
-64-->[androidx.emoji2:emoji2:1.2.0] /Users/johnpiscani/.gradle/caches/transforms-3/7efe218e7ae35cb58dbf86d5ee36a529/transformed/emoji2-1.2.0/AndroidManifest.xml:31:17-49
-65            <meta-data
-65-->[androidx.lifecycle:lifecycle-process:2.4.1] /Users/johnpiscani/.gradle/caches/transforms-3/7495f4090f64d34b46f8102bfc12da1e/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:31:13-33:52
-66                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-66-->[androidx.lifecycle:lifecycle-process:2.4.1] /Users/johnpiscani/.gradle/caches/transforms-3/7495f4090f64d34b46f8102bfc12da1e/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:32:17-78
-67                android:value="androidx.startup" />
-67-->[androidx.lifecycle:lifecycle-process:2.4.1] /Users/johnpiscani/.gradle/caches/transforms-3/7495f4090f64d34b46f8102bfc12da1e/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:33:17-49
-68        </provider>
-69    </application>
-70
-71</manifest>
+58        <meta-data
+58-->/Users/johnpiscani/AndroidStudioProjects/MealPlanner/app/src/main/AndroidManifest.xml:38:9-40:57
+59            android:name="preloaded_fonts"
+59-->/Users/johnpiscani/AndroidStudioProjects/MealPlanner/app/src/main/AndroidManifest.xml:39:13-43
+60            android:resource="@array/preloaded_fonts" />
+60-->/Users/johnpiscani/AndroidStudioProjects/MealPlanner/app/src/main/AndroidManifest.xml:40:13-54
+61
+62        <provider
+62-->[androidx.emoji2:emoji2:1.2.0] /Users/johnpiscani/.gradle/caches/transforms-3/7efe218e7ae35cb58dbf86d5ee36a529/transformed/emoji2-1.2.0/AndroidManifest.xml:24:9-32:20
+63            android:name="androidx.startup.InitializationProvider"
+63-->[androidx.emoji2:emoji2:1.2.0] /Users/johnpiscani/.gradle/caches/transforms-3/7efe218e7ae35cb58dbf86d5ee36a529/transformed/emoji2-1.2.0/AndroidManifest.xml:25:13-67
+64            android:authorities="com.example.mealplanner.androidx-startup"
+64-->[androidx.emoji2:emoji2:1.2.0] /Users/johnpiscani/.gradle/caches/transforms-3/7efe218e7ae35cb58dbf86d5ee36a529/transformed/emoji2-1.2.0/AndroidManifest.xml:26:13-68
+65            android:exported="false" >
+65-->[androidx.emoji2:emoji2:1.2.0] /Users/johnpiscani/.gradle/caches/transforms-3/7efe218e7ae35cb58dbf86d5ee36a529/transformed/emoji2-1.2.0/AndroidManifest.xml:27:13-37
+66            <meta-data
+66-->[androidx.emoji2:emoji2:1.2.0] /Users/johnpiscani/.gradle/caches/transforms-3/7efe218e7ae35cb58dbf86d5ee36a529/transformed/emoji2-1.2.0/AndroidManifest.xml:29:13-31:52
+67                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+67-->[androidx.emoji2:emoji2:1.2.0] /Users/johnpiscani/.gradle/caches/transforms-3/7efe218e7ae35cb58dbf86d5ee36a529/transformed/emoji2-1.2.0/AndroidManifest.xml:30:17-75
+68                android:value="androidx.startup" />
+68-->[androidx.emoji2:emoji2:1.2.0] /Users/johnpiscani/.gradle/caches/transforms-3/7efe218e7ae35cb58dbf86d5ee36a529/transformed/emoji2-1.2.0/AndroidManifest.xml:31:17-49
+69            <meta-data
+69-->[androidx.lifecycle:lifecycle-process:2.4.1] /Users/johnpiscani/.gradle/caches/transforms-3/7495f4090f64d34b46f8102bfc12da1e/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:31:13-33:52
+70                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+70-->[androidx.lifecycle:lifecycle-process:2.4.1] /Users/johnpiscani/.gradle/caches/transforms-3/7495f4090f64d34b46f8102bfc12da1e/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:32:17-78
+71                android:value="androidx.startup" />
+71-->[androidx.lifecycle:lifecycle-process:2.4.1] /Users/johnpiscani/.gradle/caches/transforms-3/7495f4090f64d34b46f8102bfc12da1e/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:33:17-49
+72        </provider>
+73    </application>
+74
+75</manifest>
