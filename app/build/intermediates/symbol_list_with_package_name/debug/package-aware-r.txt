@@ -3354,6 +3354,7 @@ id bounceStart
 id browse
 id browseTitle
 id buttonPanel
+id button_go
 id button_layout
 id buttons
 id cache_measures
@@ -3510,7 +3511,6 @@ id line3
 id linear
 id listMode
 id list_item
-id listview
 id m3_side_sheet
 id map
 id marquee
@@ -3684,6 +3684,7 @@ id search_view_status_bar_spacer
 id search_view_toolbar
 id search_view_toolbar_container
 id search_voice_btn
+id searchbar
 id select_dialog_listview
 id selected
 id selection_type
@@ -3756,6 +3757,7 @@ id textTop
 id text_input_end_icon
 id text_input_error_icon
 id text_input_start_icon
+id text_view
 id textinput_counter
 id textinput_error
 id textinput_helper_text

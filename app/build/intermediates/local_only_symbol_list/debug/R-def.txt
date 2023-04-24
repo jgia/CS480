@@ -16,6 +16,7 @@ drawable ic_launcher_foreground
 font archivo_black
 id browse
 id browseTitle
+id button_go
 id button_layout
 id buttons
 id datePicker
@@ -31,7 +32,6 @@ id ingredients_list
 id ingredients_title
 id instructions
 id instructions_title
-id listview
 id map
 id meal_button
 id nearby
@@ -41,12 +41,14 @@ id recipes
 id reminder_button
 id remove_button
 id searchButton
+id searchbar
 id shopping
 id shopping_list
 id sixHourReminder
 id slist_button
 id sms_button
 id textInstruct
+id text_view
 id threeHourReminder
 id title
 id update_button

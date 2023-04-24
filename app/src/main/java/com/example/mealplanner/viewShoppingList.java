@@ -1,10 +1,13 @@
 package com.example.mealplanner;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,12 +27,15 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +49,15 @@ public class viewShoppingList extends AppCompatActivity implements AdapterView.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.shoppinglist);
+
+        File shoppingListFile = new File(getFilesDir(), "ShoppingList.txt");
+        if (!shoppingListFile.exists()) {
+            try {
+                shoppingListFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         TextView shoppingListview = findViewById(R.id.shopping_list);
         Animation animation = new TranslateAnimation(
@@ -72,13 +87,16 @@ public class viewShoppingList extends AppCompatActivity implements AdapterView.O
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, shoppingList);
         ingredientsList.setAdapter(adapter);
         removeButton.setOnClickListener(view -> {
-            if (selectedPosition != -1){
-                Toast.makeText(this, Integer.toString(selectedPosition), Toast.LENGTH_SHORT).show();
-                shoppingList.remove(selectedPosition);
-                adapter.notifyDataSetChanged();
+            if (!shoppingList.isEmpty() && selectedPosition != -1){
+                removeIngredientFromShoppingList(selectedPosition);
             }
         });
 
+        updateButton.setOnClickListener(view -> {
+            if (selectedPosition != -1) {
+                showUpdateDialog();
+            }
+        });
     }
     //Uses the file and strips it into a HashMap.
     private HashMap<String, Integer> textFileToHashMap() {
@@ -109,18 +127,82 @@ public class viewShoppingList extends AppCompatActivity implements AdapterView.O
     }
     //Converts the HashMap of ingredients into String to be put through adapter.
     private ArrayList<String> convertHashMapToString(HashMap<String, Integer> shoppingListMap) {
+        ArrayList<String> shoppingList = new ArrayList<String>();
+        if (shoppingListMap == null) {
+            return shoppingList;
+        }
         String shoppingListString = shoppingListMap.toString();
         shoppingListString = shoppingListString.substring(1, shoppingListString.length() - 1);
         String[] shoppingListArray = shoppingListString.split(", ");
-        ArrayList<String> shoppingList = new ArrayList<String>();
         for (String s : shoppingListArray) {
             String[] keyValue = s.split("=");
-            String ingredient = keyValue[0];
-            String count = keyValue[1];
-            shoppingList.add(ingredient);
+            if (keyValue.length == 2) {
+                String ingredient = keyValue[0];
+                String count = keyValue[1];
+                shoppingList.add(ingredient + " x" + count);
+            }
         }
         return shoppingList;
     }
+    private void removeIngredientFromShoppingList(int selectedPosition) {
+        // Get the ingredient and count from the selected item
+        String selectedItem = shoppingList.get(selectedPosition);
+        String[] parts = selectedItem.split(" x");
+        String ingredient = parts[0];
+        // Update the shopping list HashMap
+        HashMap<String, Integer> shoppingListMap = textFileToHashMap();
+        shoppingListMap.remove(ingredient);
+        // Update the shopping list file from Hashmap
+        try {
+            FileOutputStream fos = openFileOutput("ShoppingList.txt", Context.MODE_PRIVATE);
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(fos));
+            for (Map.Entry<String, Integer> entry : shoppingListMap.entrySet()) {
+                writer.write(entry.getKey() + " x" + entry.getValue() + "\n");
+            }
+            writer.close();
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // Update the shopping list adapter
+        shoppingList = convertHashMapToString(shoppingListMap);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, shoppingList);
+        ListView ingredientsList = findViewById(R.id.ingredients_list);
+        ingredientsList.setAdapter(adapter);
+    }
+    private void showUpdateDialog() {
+        // Get the selected ingredient and quantity from ListView
+        String selectedIngredient = (String) shoppingList.get(selectedPosition);
+        String[] parts = selectedIngredient.split(" x");
+        String ingredient = parts[0];
+        int quantity = Integer.parseInt(parts[1]);
+
+        // Create an EditText for the user input
+        EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_NUMBER);
+        input.setText(Integer.toString(quantity));
+
+        // Pop dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Update Quantity")
+                .setMessage("Enter the new quantity for " + ingredient)
+                .setView(input)
+                .setPositiveButton("Done", (dialog, which) -> {
+                    // Update the quantity in the HashMap.
+                    int newQuantity = Integer.parseInt(input.getText().toString());
+                    HashMap<String, Integer> shoppingListMap = textFileToHashMap();
+                    shoppingListMap.put(ingredient, newQuantity);
+                    // Update the ListView
+                    shoppingList = convertHashMapToString(shoppingListMap);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, shoppingList);
+                    ListView ingredientsList = findViewById(R.id.ingredients_list);
+                    ingredientsList.setAdapter(adapter);
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+
 
 
     @Override
