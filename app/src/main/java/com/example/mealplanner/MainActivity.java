@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.time.format.DateTimeFormatter;
 
@@ -85,14 +86,52 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             popupMenu.setOnMenuItemClickListener(item -> {
                 switch (item.getItemId()) {
                     case R.id.halfHourReminder:
+                        if (!dateStr.equals("") && recipeID != -1) {
+                            LocalDateTime mealTime = LocalDateTime.parse(dateStr, dateFormat);
+                            LocalDateTime reminderTime = mealTime.minusMinutes(30);
+                            Toast toast = Toast.makeText(getApplicationContext(), "Reminder set for " + dateFormat.format(reminderTime), Toast.LENGTH_SHORT);
+                            toast.show();
+                        } else {
+                            Toast toast = Toast.makeText(getApplicationContext(), "Select a meal before setting a reminder!", Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
                         return true;
                     case R.id.oneHourReminder:
+                        if (!dateStr.equals("") && recipeID != -1) {
+                            LocalDateTime mealTime = LocalDateTime.parse(dateStr, dateFormat);
+                            LocalDateTime reminderTime = mealTime.minusMinutes(60);
+                            Toast toast = Toast.makeText(getApplicationContext(), "Reminder set for " + dateFormat.format(reminderTime), Toast.LENGTH_SHORT);
+                            toast.show();
+                        } else {
+                            Toast toast = Toast.makeText(getApplicationContext(), "Select a meal before setting a reminder!", Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
                         return true;
                     case R.id.threeHourReminder:
+                        if (!dateStr.equals("") && recipeID != -1) {
+                            LocalDateTime mealTime = LocalDateTime.parse(dateStr, dateFormat);
+                            LocalDateTime reminderTime = mealTime.minusMinutes(180);
+                            Toast toast = Toast.makeText(getApplicationContext(), "Reminder set for " + dateFormat.format(reminderTime), Toast.LENGTH_SHORT);
+                            toast.show();
+                        } else {
+                            Toast toast = Toast.makeText(getApplicationContext(), "Select a meal before setting a reminder!", Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
                         return true;
                     case R.id.sixHourReminder:
+                        if (!dateStr.equals("") && recipeID != -1) {
+                            LocalDateTime mealTime = LocalDateTime.parse(dateStr, dateFormat);
+                            LocalDateTime reminderTime = mealTime.minusMinutes(360);
+                            Toast toast = Toast.makeText(getApplicationContext(), "Reminder set for " + dateFormat.format(reminderTime), Toast.LENGTH_SHORT);
+                            toast.show();
+                        } else {
+                            Toast toast = Toast.makeText(getApplicationContext(), "Select a meal before setting a reminder!", Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
                         return true;
                     default:
+                        Toast toast = Toast.makeText(getApplicationContext(), "Error: menu selection failed. Please try again!", Toast.LENGTH_SHORT);
+                        toast.show();
                         return false;
                 }
             });

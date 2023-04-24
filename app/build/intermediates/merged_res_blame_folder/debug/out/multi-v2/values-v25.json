@@ -4,7 +4,7 @@
             "outputFile": "com.example.mealplanner.app-mergeDebugResources-31:/values-v25/values-v25.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\nab\\.gradle\\caches\\transforms-3\\0195608705a3ced8b59d8a8f025efc7a\\transformed\\appcompat-1.6.1\\res\\values-v25\\values-v25.xml",
+                    "source": "C:\\Users\\johnr\\.gradle\\caches\\transforms-3\\0195608705a3ced8b59d8a8f025efc7a\\transformed\\appcompat-1.6.1\\res\\values-v25\\values-v25.xml",
                     "from": {
                         "startLines": "2,3,4,6",
                         "startColumns": "4,4,4,4",
