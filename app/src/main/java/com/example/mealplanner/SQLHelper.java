@@ -30,15 +30,15 @@ public class SQLHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    //called to create table
-    //NB: this is not a lifecycle method because this class is not an Activity
+    // Called to create table
+    // NB: this is not a lifecycle method because this class is not an Activity
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.d("SQLiteDemo", "onCreate: " + CREATE_TABLE);
         db.execSQL(CREATE_TABLE);
     }
 
-    //called when database version mismatch
+    // Called when database version mismatch
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 

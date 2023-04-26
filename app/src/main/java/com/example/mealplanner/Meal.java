@@ -14,42 +14,24 @@ import java.time.LocalDateTime;
 
 public class Meal {
     private String recipeName;
-    private int mealID;
-    private int recipeID;
-    private LocalDateTime datetime;
+    private final int recipeID;
+    private final LocalDateTime datetime;
 
-    //accessors and mutators
-    public int getMealID() {
-        return mealID;
-    }
-
-    public void setMealID(int id) {
-        this.mealID = id;
-    }
-
+    // Accessors and mutators
     public int getRecipeID() {
         return recipeID;
-    }
-
-    public void setRecipeID(int id) {
-        this.recipeID = id;
     }
 
     public LocalDateTime getDateTime() {
         return datetime;
     }
 
-    public void setDateTime(LocalDateTime dt) {
-        this.datetime = dt;
-    }
-
-    //constructor
+    // Constructor
     public Meal(int recipeID, LocalDateTime datetime) {
         super();
         this.recipeID = recipeID;
         this.datetime = datetime;
     }
-
 
     private String identifyRecipeName() throws InterruptedException {
         // Create a new thread to perform the database operation
@@ -75,7 +57,7 @@ public class Meal {
                 if (stmt != null) {
                     ResultSet result = stmt.executeQuery("select * from recipe where RecipeID like " + getRecipeID() + ";");
 
-                    //read result set, write data to Log
+                    // Read result set, write data to Log
                     while (result.next()) {
                         String name = result.getString("Name");
                         recipeName = name;
@@ -85,7 +67,7 @@ public class Meal {
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
-                try { //close connection, may throw checked exception
+                try { // Close connection, may throw checked exception
                     if (con != null)
                         con.close();
                 } catch (SQLException e) {
@@ -100,7 +82,7 @@ public class Meal {
         return recipeName;
     }
 
-    //toString
+    // toString
     @NonNull
     @Override
     public String toString() {

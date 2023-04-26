@@ -73,7 +73,7 @@ public class foodDescription extends AppCompatActivity implements DatePickerDial
         ingredients.setAdapter(adapter);
         ingredients.setOnItemClickListener(this);
 
-        //set up speaker
+        // set up speaker
         speaker = new TextToSpeech(this, i -> {
             // status can be either TextToSpeech.SUCCESS or TextToSpeech.ERROR.
             if (i == TextToSpeech.SUCCESS) {
@@ -137,12 +137,8 @@ public class foodDescription extends AppCompatActivity implements DatePickerDial
         });
 
         emailButton.setOnClickListener(v -> sendEmail());
-
         smsButton.setOnClickListener(v -> sendSMS());
-
-
     }
-
 
     public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
         // speak the item
@@ -286,10 +282,10 @@ public class foodDescription extends AppCompatActivity implements DatePickerDial
             String file = "ShoppingList.txt";
             File shoppingListTxt = new File(getFilesDir(), file);
             boolean fileExists = shoppingListTxt.exists();
-            //Hashmap to store ingredient name, plus how much you need.
+            // Hashmap to store ingredient name, plus how much you need.
             Map<String, Integer> ingredientMap = new HashMap<>();
 
-            //Read existing file into map if exists.
+            // Read existing file into map if exists.
             if (fileExists) {
                 FileInputStream fis = new FileInputStream(shoppingListTxt);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
@@ -362,7 +358,7 @@ public class foodDescription extends AppCompatActivity implements DatePickerDial
         this.year = String.valueOf(year);
 
         if ((month / 10) >= 1)
-            this.month = String.valueOf(month + 1); // For whatever reason, month is always 1 less than it should be (e.g., April will be month 3 by default)
+            this.month = String.valueOf(month + 1); // For whatever reason, month is always 1 less than it should be (e.g., April will be month #3 by default)
         else
             this.month = "0" + (month + 1);
 

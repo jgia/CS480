@@ -1,18 +1,24 @@
 package com.example.mealplanner;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.Menu;
@@ -32,14 +38,25 @@ import java.time.format.DateTimeFormatter;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     public final static DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");
-    private String dateStr = "";
-    private int recipeID = -1;
+    private String dateStr = ""; // Default date is blank
+    private int recipeID = -1; // Default recipeID is -1 (an ID not possible in the database)
 
-    private View lastSelectedView;
+    private View lastSelectedView; // The last meal item a user selected in the list
     public static ArrayList<Meal> meals = new ArrayList<>();
     public static ArrayAdapter<Meal> adapt;
     public static String NOTIFICATION_CHANNEL_ID = "1001";
     public static String default_notification_id = "default";
+
+    private final ActivityResultLauncher<String> requestPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    scheduleNotification(getNotification("Notifications enabled for Android 13"), 0); // API 33 requires an extra permission for notifications
+                } else {
+                    // Warn the user if notifications are disabled. Reminders can't be pushed if notifications are disabled
+                    Toast toast = Toast.makeText(getApplicationContext(), "Warning: notifications disabled! Reminders will not work until notifications enabled.", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -71,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Button delete_button = findViewById(R.id.delete_button);
         delete_button.setOnClickListener(view -> {
             if (!dateStr.equals("") && recipeID != -1) {
-                deleteMeal();
+                deleteMeal(); // Delete is based on dateStr and recipeID. If for some reason a user has two of the exact same recipes scheduled at the same time, it will delete both
             } else {
                 Toast toast = Toast.makeText(getApplicationContext(), "Nothing selected to delete!", Toast.LENGTH_SHORT);
                 toast.show();
@@ -82,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         recipe_button.setOnClickListener(view -> {
             if (recipeID != -1) {
                 Intent intent = new Intent(MainActivity.this, foodDescription.class);
-                intent.putExtra("recipe_id", recipeID);
+                intent.putExtra("recipe_id", recipeID); // Lookup the food description based on recipeID
                 startActivity(intent);
             } else {
                 Toast toast = Toast.makeText(getApplicationContext(), "You must select a meal to view the recipe!", Toast.LENGTH_SHORT);
@@ -96,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             PopupMenu popupMenu = new PopupMenu(this, view);
             popupMenu.inflate(R.menu.reminder_menu);
 
-            // The popup  menu uses the items from reminder_menu.xml
+            // The popup menu uses the items from reminder_menu.xml
             popupMenu.setOnMenuItemClickListener(item -> {
                 switch (item.getItemId()) {
                     case R.id.halfHourReminder:
@@ -106,6 +123,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                             LocalDateTime reminderTime = mealTime.minusMinutes(30); // Get the date and time of the reminder (30 minutes before the meal in this case)
                             if (reminderTime.isAfter(currentDateTime)) { // If the user is trying to set a reminder for a time that has already passed, tell them they cannot
                                 Duration timeUntilReminder = Duration.between(currentDateTime, reminderTime); // Otherwise, get the time until the reminder (duration between now and the reminder)
+                                checkNotificationPermissions(); // Check that it's possible to show notifications
                                 Toast toast = Toast.makeText(getApplicationContext(), "Reminder set for " + dateFormat.format(reminderTime), Toast.LENGTH_SHORT); // Tell the user when the reminder is set for
                                 scheduleNotification(getNotification("Meal in 30 minutes!"), (int) timeUntilReminder.toMillis()); // Set the reminder to be sent at the reminder time (the delay / duration between now and then is in milliseconds)
                                 toast.show();
@@ -125,6 +143,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                             LocalDateTime reminderTime = mealTime.minusMinutes(60);
                             if (reminderTime.isAfter(currentDateTime)) {
                                 Duration timeUntilReminder = Duration.between(currentDateTime, reminderTime);
+                                checkNotificationPermissions();
                                 Toast toast = Toast.makeText(getApplicationContext(), "Reminder set for " + dateFormat.format(reminderTime), Toast.LENGTH_SHORT);
                                 scheduleNotification(getNotification("Meal in 1 hour!"), (int) timeUntilReminder.toMillis());
                                 toast.show();
@@ -144,6 +163,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                             LocalDateTime reminderTime = mealTime.minusMinutes(180);
                             if (reminderTime.isAfter(currentDateTime)) {
                                 Duration timeUntilReminder = Duration.between(currentDateTime, reminderTime);
+                                checkNotificationPermissions();
                                 Toast toast = Toast.makeText(getApplicationContext(), "Reminder set for " + dateFormat.format(reminderTime), Toast.LENGTH_SHORT);
                                 scheduleNotification(getNotification("Meal in 3 hours!"), (int) timeUntilReminder.toMillis());
                                 toast.show();
@@ -163,6 +183,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                             LocalDateTime reminderTime = mealTime.minusMinutes(360);
                             if (reminderTime.isAfter(currentDateTime)) {
                                 Duration timeUntilReminder = Duration.between(currentDateTime, reminderTime);
+                                checkNotificationPermissions();
                                 Toast toast = Toast.makeText(getApplicationContext(), "Reminder set for " + dateFormat.format(reminderTime), Toast.LENGTH_SHORT);
                                 scheduleNotification(getNotification("Meal in 6 hours!"), (int) timeUntilReminder.toMillis());
                                 toast.show();
@@ -217,6 +238,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
+    // onItemClick deals with the list of meals
     @Override
     public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
         // If a list item has been selected before, it has a blue background with white text to indicate that it is selected
@@ -259,11 +281,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     public void deleteMeal() {
         try (SQLHelper helper = new SQLHelper(this)) {
-
-            // Insert 2 test meals into the SQLite database
+            // Delete the meal based on recipeID and dateStr
             helper.deleteMeal(recipeID, dateStr);
 
-            // Query the SQLite database to get the list of meals
+            // Query the SQLite database to get the new list of meals
             meals = helper.getMealList();
 
             // Update the weeklyMealsList adapter with meals from databases
@@ -279,6 +300,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
+    // Check that the application has the permission to send notifications in API 33
+    private void checkNotificationPermissions() {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // API 33 requires a manifest permission for notifications. The user must manually click "allow" for notifications
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                // If permissions for notifications are not granted, request permission from the user
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+            }
+        }
+    }
     // The following two methods were created based on code from the following KDTechs YouTube video: https://www.youtube.com/watch?v=Ijv0vcxNk78
 
     // scheduleNotification Schedules a notification to occur in a specific amount of milliseconds (delay) using the MyNotificationPublisher class
