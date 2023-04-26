@@ -2,11 +2,17 @@ package com.example.mealplanner;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.core.app.NotificationCompat;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +23,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.time.format.DateTimeFormatter;
@@ -27,6 +34,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private int recipeID = -1;
     public static ArrayList<Meal> meals = new ArrayList<>();
     public static ArrayAdapter<Meal> adapt;
+    public static String NOTIFICATION_CHANNEL_ID = "1001";
+    public static String default_notification_id = "default";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,10 +96,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 switch (item.getItemId()) {
                     case R.id.halfHourReminder:
                         if (!dateStr.equals("") && recipeID != -1) {
+                            LocalDateTime currentDateTime = LocalDateTime.now();
                             LocalDateTime mealTime = LocalDateTime.parse(dateStr, dateFormat);
                             LocalDateTime reminderTime = mealTime.minusMinutes(30);
-                            Toast toast = Toast.makeText(getApplicationContext(), "Reminder set for " + dateFormat.format(reminderTime), Toast.LENGTH_SHORT);
-                            toast.show();
+                            if (reminderTime.isAfter(currentDateTime)) {
+                                Duration timeUntilReminder = Duration.between(currentDateTime, reminderTime);
+                                Toast toast = Toast.makeText(getApplicationContext(), "Reminder set for " + dateFormat.format(reminderTime), Toast.LENGTH_SHORT);
+                                scheduleNotification(getNotification("Meal in 30 minutes!"), (int) timeUntilReminder.toMillis());
+                                toast.show();
+                            }
+                            else{
+                                Toast toast = Toast.makeText(getApplicationContext(), "The meal is in less than 30 minutes! Reminder not set.", Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
                         } else {
                             Toast toast = Toast.makeText(getApplicationContext(), "Select a meal before setting a reminder!", Toast.LENGTH_SHORT);
                             toast.show();
@@ -98,10 +116,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         return true;
                     case R.id.oneHourReminder:
                         if (!dateStr.equals("") && recipeID != -1) {
+                            LocalDateTime currentDateTime = LocalDateTime.now();
                             LocalDateTime mealTime = LocalDateTime.parse(dateStr, dateFormat);
                             LocalDateTime reminderTime = mealTime.minusMinutes(60);
-                            Toast toast = Toast.makeText(getApplicationContext(), "Reminder set for " + dateFormat.format(reminderTime), Toast.LENGTH_SHORT);
-                            toast.show();
+                            if (reminderTime.isAfter(currentDateTime)) {
+                                Duration timeUntilReminder = Duration.between(currentDateTime, reminderTime);
+                                Toast toast = Toast.makeText(getApplicationContext(), "Reminder set for " + dateFormat.format(reminderTime), Toast.LENGTH_SHORT);
+                                scheduleNotification(getNotification("Meal in 1 hour!"), (int) timeUntilReminder.toMillis());
+                                toast.show();
+                            }
+                            else{
+                                Toast toast = Toast.makeText(getApplicationContext(), "The meal is in less than 1 hour! Reminder not set.", Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
                         } else {
                             Toast toast = Toast.makeText(getApplicationContext(), "Select a meal before setting a reminder!", Toast.LENGTH_SHORT);
                             toast.show();
@@ -109,10 +136,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         return true;
                     case R.id.threeHourReminder:
                         if (!dateStr.equals("") && recipeID != -1) {
+                            LocalDateTime currentDateTime = LocalDateTime.now();
                             LocalDateTime mealTime = LocalDateTime.parse(dateStr, dateFormat);
                             LocalDateTime reminderTime = mealTime.minusMinutes(180);
-                            Toast toast = Toast.makeText(getApplicationContext(), "Reminder set for " + dateFormat.format(reminderTime), Toast.LENGTH_SHORT);
-                            toast.show();
+                            if (reminderTime.isAfter(currentDateTime)) {
+                                Duration timeUntilReminder = Duration.between(currentDateTime, reminderTime);
+                                Toast toast = Toast.makeText(getApplicationContext(), "Reminder set for " + dateFormat.format(reminderTime), Toast.LENGTH_SHORT);
+                                scheduleNotification(getNotification("Meal in 3 hours!"), (int) timeUntilReminder.toMillis());
+                                toast.show();
+                            }
+                            else{
+                                Toast toast = Toast.makeText(getApplicationContext(), "The meal is in less than 3 hours! Reminder not set.", Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
                         } else {
                             Toast toast = Toast.makeText(getApplicationContext(), "Select a meal before setting a reminder!", Toast.LENGTH_SHORT);
                             toast.show();
@@ -120,10 +156,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         return true;
                     case R.id.sixHourReminder:
                         if (!dateStr.equals("") && recipeID != -1) {
+                            LocalDateTime currentDateTime = LocalDateTime.now();
                             LocalDateTime mealTime = LocalDateTime.parse(dateStr, dateFormat);
                             LocalDateTime reminderTime = mealTime.minusMinutes(360);
-                            Toast toast = Toast.makeText(getApplicationContext(), "Reminder set for " + dateFormat.format(reminderTime), Toast.LENGTH_SHORT);
-                            toast.show();
+                            if (reminderTime.isAfter(currentDateTime)) {
+                                Duration timeUntilReminder = Duration.between(currentDateTime, reminderTime);
+                                Toast toast = Toast.makeText(getApplicationContext(), "Reminder set for " + dateFormat.format(reminderTime), Toast.LENGTH_SHORT);
+                                scheduleNotification(getNotification("Meal in 6 hours!"), (int) timeUntilReminder.toMillis());
+                                toast.show();
+                            }
+                            else{
+                                Toast toast = Toast.makeText(getApplicationContext(), "The meal is in less than 6 hours! Reminder not set.", Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
                         } else {
                             Toast toast = Toast.makeText(getApplicationContext(), "Select a meal before setting a reminder!", Toast.LENGTH_SHORT);
                             toast.show();
@@ -197,5 +242,29 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    // The following two methods were created based on code from the following KDTechs YouTube video: https://www.youtube.com/watch?v=Ijv0vcxNk78
+
+    // scheduleNotification Schedules a notification to occur in a specific amount of milliseconds (delay) using the MyNotificationPublisher class
+    private void scheduleNotification(Notification notification, int delay){
+        Intent notificationIntent = new Intent(this, MyNotificationPublisher.class);
+        notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATIONID,1);
+        notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATION, notification);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        long futureMillis = SystemClock.elapsedRealtime()+delay;
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        assert alarmManager != null;
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureMillis, pendingIntent);
+    }
+
+    private Notification getNotification(String content){
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, default_notification_id);
+        builder.setContentText(content);
+        builder.setSmallIcon(R.drawable.ic_launcher_foreground);
+        builder.setAutoCancel(true);
+        builder.setChannelId(NOTIFICATION_CHANNEL_ID);
+
+        return builder.build();
     }
 }
