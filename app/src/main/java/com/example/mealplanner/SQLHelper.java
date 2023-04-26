@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -91,7 +90,7 @@ public class SQLHelper extends SQLiteOpenHelper {
 
         Cursor cursor = db.query(TABLE_NAME,
                 new String[]{KEY_RECIPE, KEY_DATETIME},
-                selection, selectionArgs, null, null, KEY_RECIPE);
+                selection, selectionArgs, null, null, KEY_DATETIME + " ASC"); // Sort meals in ascending order by date
 
         // Write contents of the cursor to mealList
         ArrayList<Meal> mealList = new ArrayList<>();

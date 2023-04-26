@@ -16,13 +16,13 @@ public class MyNotificationPublisher extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification notification = intent.getParcelableExtra(NOTIFICATION);
-        int importance = NotificationManager.IMPORTANCE_HIGH;
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE); // Initialize NotificationManager object
+        Notification notification = intent.getParcelableExtra(NOTIFICATION); // Get notification from the intent
+        int importance = NotificationManager.IMPORTANCE_HIGH; // Set importance to high (so the popup appears)
         NotificationChannel notificationChannel = new NotificationChannel(MainActivity.NOTIFICATION_CHANNEL_ID, "NOTIFICATION_CHANNEL_NAME", importance);
         assert notificationManager != null;
         notificationManager.createNotificationChannel(notificationChannel);
-        int id = intent.getIntExtra(NOTIFICATIONID, 0);
-        notificationManager.notify(id, notification);
+        int id = intent.getIntExtra(NOTIFICATIONID, 0); // Get the notifationid from the intent, or 0 if no notificationid specified
+        notificationManager.notify(id, notification); // Trigger the notification
     }
 }

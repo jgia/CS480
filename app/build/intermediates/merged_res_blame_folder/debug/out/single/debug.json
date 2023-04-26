@@ -1,5 +1,9 @@
 [
     {
+        "merged": "com.example.mealplanner.app-merged_res-33:/drawable_droid.gif.flat",
+        "source": "com.example.mealplanner.app-main-35:/drawable/droid.gif"
+    },
+    {
         "merged": "C:\\Users\\johnr\\.gradle\\daemon\\7.5\\com.example.mealplanner.app-merged_res-33:\\xml_backup_rules.xml.flat",
         "source": "C:\\Users\\johnr\\.gradle\\daemon\\7.5\\com.example.mealplanner.app-main-35:\\xml\\backup_rules.xml"
     },
@@ -46,10 +50,6 @@
     {
         "merged": "C:\\Users\\johnr\\.gradle\\daemon\\7.5\\com.example.mealplanner.app-merged_res-33:\\drawable-v24_ic_launcher_foreground.xml.flat",
         "source": "C:\\Users\\johnr\\.gradle\\daemon\\7.5\\com.example.mealplanner.app-main-35:\\drawable-v24\\ic_launcher_foreground.xml"
-    },
-    {
-        "merged": "com.example.mealplanner.app-merged_res-33:/layout_shoppinglist.xml.flat",
-        "source": "com.example.mealplanner.app-main-35:/layout/shoppinglist.xml"
     },
     {
         "merged": "C:\\Users\\johnr\\.gradle\\daemon\\7.5\\com.example.mealplanner.app-merged_res-33:\\mipmap-xxxhdpi_ic_launcher_round.webp.flat",

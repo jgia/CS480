@@ -15,4 +15,9 @@
     <string name="remove">Remove</string>
     <string name="update">Update</string>
     <string name="shopping_list">Shopping List</string>
+    <string name="nearby_stores">Nearby Stores</string>
+    <string name="home">Home</string>
+    <string name="enter_address_or_location">Enter address or location</string>
+    <string name="go">GO</string>
+    <string name="select_a_marker">Select a marker.</string>
 </resources>

@@ -4075,6 +4075,7 @@ string common_open_on_phone
 string common_signin_button_text
 string common_signin_button_text_long
 string delete
+string enter_address_or_location
 string enter_an_ingredient_and_click_search
 string enter_text_here
 string error_a11y_label
@@ -4082,8 +4083,10 @@ string error_icon_content_description
 string exposed_dropdown_menu_content_description
 string fab_transformation_scrim_behavior
 string fab_transformation_sheet_behavior
+string go
 string google_maps_key
 string hide_bottom_view_on_scroll_behavior
+string home
 string icon_content_description
 string item_view_role_description
 string m3_sys_motion_easing_emphasized
@@ -4182,6 +4185,7 @@ string mtrl_switch_track_decoration_path
 string mtrl_switch_track_path
 string mtrl_timepicker_cancel
 string mtrl_timepicker_confirm
+string nearby_stores
 string password_toggle_content_description
 string path_password_eye
 string path_password_eye_mask_strike_through
@@ -4201,6 +4205,7 @@ string search_menu_title
 string searchbar_scrolling_view_behavior
 string searchview_clear_text_content_description
 string searchview_navigation_content_description
+string select_a_marker
 string set_reminder
 string shopping_list
 string side_sheet_accessibility_pane_title

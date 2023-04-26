@@ -4074,6 +4074,7 @@ int string common_open_on_phone 0x7f13003b
 int string common_signin_button_text 0x7f13003c
 int string common_signin_button_text_long 0x7f13003d
 int string delete 0x7f13003e
+int string enter_address_or_location 0x7f1300c7
 int string enter_an_ingredient_and_click_search 0x7f1300bf
 int string enter_text_here 0x7f1300c0
 int string error_a11y_label 0x7f13003f
@@ -4081,8 +4082,10 @@ int string error_icon_content_description 0x7f130040
 int string exposed_dropdown_menu_content_description 0x7f130041
 int string fab_transformation_scrim_behavior 0x7f130042
 int string fab_transformation_sheet_behavior 0x7f130043
+int string go 0x7f1300c8
 int string google_maps_key 0x7f130044
 int string hide_bottom_view_on_scroll_behavior 0x7f130045
+int string home 0x7f1300c5
 int string icon_content_description 0x7f130046
 int string item_view_role_description 0x7f130047
 int string m3_sys_motion_easing_emphasized 0x7f130048
@@ -4181,6 +4184,7 @@ int string mtrl_switch_track_decoration_path 0x7f1300a4
 int string mtrl_switch_track_path 0x7f1300a5
 int string mtrl_timepicker_cancel 0x7f1300a6
 int string mtrl_timepicker_confirm 0x7f1300a7
+int string nearby_stores 0x7f1300c6
 int string password_toggle_content_description 0x7f1300a8
 int string path_password_eye 0x7f1300a9
 int string path_password_eye_mask_strike_through 0x7f1300aa
@@ -4200,6 +4204,7 @@ int string search_menu_title 0x7f1300b5
 int string searchbar_scrolling_view_behavior 0x7f1300b6
 int string searchview_clear_text_content_description 0x7f1300b7
 int string searchview_navigation_content_description 0x7f1300b8
+int string select_a_marker 0x7f1300c9
 int string set_reminder 0x7f1300b9
 int string shopping_list 0x7f1300c3
 int string side_sheet_accessibility_pane_title 0x7f1300ba

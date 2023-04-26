@@ -101,20 +101,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 switch (item.getItemId()) {
                     case R.id.halfHourReminder:
                         if (!dateStr.equals("") && recipeID != -1) {
-                            LocalDateTime currentDateTime = LocalDateTime.now();
-                            LocalDateTime mealTime = LocalDateTime.parse(dateStr, dateFormat);
-                            LocalDateTime reminderTime = mealTime.minusMinutes(30);
-                            if (reminderTime.isAfter(currentDateTime)) {
-                                Duration timeUntilReminder = Duration.between(currentDateTime, reminderTime);
-                                Toast toast = Toast.makeText(getApplicationContext(), "Reminder set for " + dateFormat.format(reminderTime), Toast.LENGTH_SHORT);
-                                scheduleNotification(getNotification("Meal in 30 minutes!"), (int) timeUntilReminder.toMillis());
+                            LocalDateTime currentDateTime = LocalDateTime.now(); // Get the current date and time
+                            LocalDateTime mealTime = LocalDateTime.parse(dateStr, dateFormat); // Get the date and time of the meal
+                            LocalDateTime reminderTime = mealTime.minusMinutes(30); // Get the date and time of the reminder (30 minutes before the meal in this case)
+                            if (reminderTime.isAfter(currentDateTime)) { // If the user is trying to set a reminder for a time that has already passed, tell them they cannot
+                                Duration timeUntilReminder = Duration.between(currentDateTime, reminderTime); // Otherwise, get the time until the reminder (duration between now and the reminder)
+                                Toast toast = Toast.makeText(getApplicationContext(), "Reminder set for " + dateFormat.format(reminderTime), Toast.LENGTH_SHORT); // Tell the user when the reminder is set for
+                                scheduleNotification(getNotification("Meal in 30 minutes!"), (int) timeUntilReminder.toMillis()); // Set the reminder to be sent at the reminder time (the delay / duration between now and then is in milliseconds)
                                 toast.show();
                             } else {
                                 Toast toast = Toast.makeText(getApplicationContext(), "The meal is in less than 30 minutes! Reminder not set.", Toast.LENGTH_SHORT);
                                 toast.show();
                             }
                         } else {
-                            Toast toast = Toast.makeText(getApplicationContext(), "Select a meal before setting a reminder!", Toast.LENGTH_SHORT);
+                            Toast toast = Toast.makeText(getApplicationContext(), "Select a meal before setting a reminder!", Toast.LENGTH_SHORT); // The user must select a meal before scheduling a reminder
                             toast.show();
                         }
                         return true;
@@ -185,9 +185,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         });
     }
 
+    // Menu containing "Browse Meals", "Shopping List", "Nearby Stores", and "Home"
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
+        if (getSupportActionBar() != null && getSupportActionBar().getTitle() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false); // Remove the app title from the menu
+        }
         return true;
     }
 
@@ -282,17 +286,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Intent notificationIntent = new Intent(this, MyNotificationPublisher.class);
         notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATIONID, 1);
         notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATION, notification);
+        // PendingIntent is sent as broadcast when the alarm is triggered
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-        long futureMillis = SystemClock.elapsedRealtime() + delay;
+        long futureMillis = SystemClock.elapsedRealtime() + delay; // Notification is shown at this time
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         assert alarmManager != null;
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureMillis, pendingIntent);
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureMillis, pendingIntent); // Wake the device if it's asleep
     }
 
     private Notification getNotification(String content) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, default_notification_id);
-        builder.setContentText(content);
-        builder.setSmallIcon(R.drawable.ic_launcher_foreground);
+        builder.setContentText(content); // Set the message for the notification
+        builder.setSmallIcon(R.drawable.droid); // Use droid icon
         builder.setAutoCancel(true);
         builder.setChannelId(NOTIFICATION_CHANNEL_ID);
 
