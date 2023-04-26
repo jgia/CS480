@@ -25,7 +25,6 @@ id datePicker
 id delete_button
 id email_button
 id enterText
-id floater_button
 id food_description
 id food_name
 id halfHourReminder
@@ -75,8 +74,11 @@ string enter_an_ingredient_and_click_search
 string enter_text_here
 string google_maps_key
 string meals_this_week
+string remove
 string search
 string set_reminder
+string shopping_list
+string update
 string view_recipe
 style Theme.MealPlanner
 xml backup_rules

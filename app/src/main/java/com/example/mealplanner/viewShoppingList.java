@@ -3,17 +3,18 @@ package com.example.mealplanner;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.BounceInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
@@ -22,21 +23,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,6 +40,8 @@ public class viewShoppingList extends AppCompatActivity implements AdapterView.O
 
     private int selectedPosition;
     private ArrayList<String> shoppingList;
+    private View lastSelectedIngredientView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +73,6 @@ public class viewShoppingList extends AppCompatActivity implements AdapterView.O
 
         ListView ingredientsList = findViewById(R.id.ingredients_list);
         ingredientsList.setOnItemClickListener(this);
-        FloatingActionButton floater = findViewById(R.id.floater_button);
 
         //Using these two functions to edit the list view.
         //Idea behind this is that it would be easier to edit the values
@@ -84,10 +80,10 @@ public class viewShoppingList extends AppCompatActivity implements AdapterView.O
         HashMap<String, Integer> shoppingListMap = textFileToHashMap();
         shoppingList = convertHashMapToString(shoppingListMap);
         // Set the adapter
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, shoppingList);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, shoppingList);
         ingredientsList.setAdapter(adapter);
         removeButton.setOnClickListener(view -> {
-            if (!shoppingList.isEmpty() && selectedPosition != -1){
+            if (!shoppingList.isEmpty() && selectedPosition != -1) {
                 removeIngredientFromShoppingList(selectedPosition);
             }
         });
@@ -98,6 +94,7 @@ public class viewShoppingList extends AppCompatActivity implements AdapterView.O
             }
         });
     }
+
     //Uses the file and strips it into a HashMap.
     private HashMap<String, Integer> textFileToHashMap() {
         HashMap<String, Integer> shoppingListMap = new HashMap<>();
@@ -120,14 +117,15 @@ public class viewShoppingList extends AppCompatActivity implements AdapterView.O
                 fis.close();
                 reader.close();
             }
-        } catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return shoppingListMap;
     }
+
     //Converts the HashMap of ingredients into String to be put through adapter.
     private ArrayList<String> convertHashMapToString(HashMap<String, Integer> shoppingListMap) {
-        ArrayList<String> shoppingList = new ArrayList<String>();
+        ArrayList<String> shoppingList = new ArrayList<>();
         if (shoppingListMap == null) {
             return shoppingList;
         }
@@ -144,6 +142,7 @@ public class viewShoppingList extends AppCompatActivity implements AdapterView.O
         }
         return shoppingList;
     }
+
     private void removeIngredientFromShoppingList(int selectedPosition) {
         // Get the ingredient and count from the selected item
         String selectedItem = shoppingList.get(selectedPosition);
@@ -166,10 +165,11 @@ public class viewShoppingList extends AppCompatActivity implements AdapterView.O
         }
         // Update the shopping list adapter
         shoppingList = convertHashMapToString(shoppingListMap);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, shoppingList);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, shoppingList);
         ListView ingredientsList = findViewById(R.id.ingredients_list);
         ingredientsList.setAdapter(adapter);
     }
+
     private void showUpdateDialog() {
         // Get the selected ingredient and quantity from ListView
         String selectedIngredient = (String) shoppingList.get(selectedPosition);
@@ -194,7 +194,7 @@ public class viewShoppingList extends AppCompatActivity implements AdapterView.O
                     shoppingListMap.put(ingredient, newQuantity);
                     // Update the ListView
                     shoppingList = convertHashMapToString(shoppingListMap);
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, shoppingList);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, shoppingList);
                     ListView ingredientsList = findViewById(R.id.ingredients_list);
                     ingredientsList.setAdapter(adapter);
                 })
@@ -202,14 +202,13 @@ public class viewShoppingList extends AppCompatActivity implements AdapterView.O
                 .show();
     }
 
-
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
+
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -231,14 +230,40 @@ public class viewShoppingList extends AppCompatActivity implements AdapterView.O
         }
     }
 
-
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        // selectedPosition == position
+        // If a list item has been selected before, it has a green background with red text to indicate that it is selected
+        // When we select a new item, we want to reset colors on the old item (as it is no longer selected)
+        if (lastSelectedIngredientView != null && lastSelectedIngredientView != view) {
+            TextView lastTextView = lastSelectedIngredientView.findViewById(android.R.id.text1);
+            lastTextView.setTextColor(Color.BLACK);
+            lastSelectedIngredientView.setBackgroundColor(Color.TRANSPARENT);
+        }
+
         selectedPosition = position;
-        Toast.makeText(this, Integer.toString(selectedPosition), Toast.LENGTH_SHORT).show();
-        TextView textView = (TextView) view.findViewById(android.R.id.text1);
-        textView.setTextColor(Color.WHITE);
-        view.setBackgroundColor(Color.GREEN);
+
+        // Grab the text and background of the ingredient that was just selected
+        TextView textView = view.findViewById(android.R.id.text1);
+        Drawable background = view.getBackground();
+
+        // If an item has never been selected before, it's background it technically null
+        // However, we'll say the default background has the color Color.TRANSPARENT (it looks the same as a null background)
+        int backgroundColor = Color.TRANSPARENT;
+        // If the background is not null, it's either TRANSPARENT or GREEN. We'll check that here
+        if (background != null) {
+            backgroundColor = ((ColorDrawable) background).getColor();
+        }
+
+        // If the background color is transparent, this list item was not previously selected.
+        // Now that the user has selected it, we can update its colors to indicate it has been selected
+        if (backgroundColor == Color.TRANSPARENT) {
+            lastSelectedIngredientView = view;
+            textView.setTextColor(Color.RED);
+            view.setBackgroundColor(Color.GREEN);
+        } else { // If the background color was already green, the user wants to unselect it
+            selectedPosition = -1; // We can clear selectedPosition and reset the colors of the list item
+            textView.setTextColor(Color.BLACK);
+            view.setBackgroundColor(Color.TRANSPARENT);
+        }
     }
 }

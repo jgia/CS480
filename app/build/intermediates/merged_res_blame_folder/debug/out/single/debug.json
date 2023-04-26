@@ -4,16 +4,12 @@
         "source": "C:\\Users\\johnr\\.gradle\\daemon\\7.5\\com.example.mealplanner.app-main-35:\\xml\\backup_rules.xml"
     },
     {
-        "merged": "C:\\Users\\johnr\\.gradle\\daemon\\7.5\\com.example.mealplanner.app-merged_res-33:\\menu_reminder_menu.xml.flat",
-        "source": "C:\\Users\\johnr\\.gradle\\daemon\\7.5\\com.example.mealplanner.app-main-35:\\menu\\reminder_menu.xml"
-    },
-    {
         "merged": "C:\\Users\\johnr\\.gradle\\daemon\\7.5\\com.example.mealplanner.app-merged_res-33:\\mipmap-hdpi_ic_launcher_round.webp.flat",
         "source": "C:\\Users\\johnr\\.gradle\\daemon\\7.5\\com.example.mealplanner.app-main-35:\\mipmap-hdpi\\ic_launcher_round.webp"
     },
     {
-        "merged": "com.example.mealplanner.app-merged_res-33:/layout_browse_meals_search.xml.flat",
-        "source": "com.example.mealplanner.app-main-35:/layout/browse_meals_search.xml"
+        "merged": "C:\\Users\\johnr\\.gradle\\daemon\\7.5\\com.example.mealplanner.app-merged_res-33:\\menu_reminder_menu.xml.flat",
+        "source": "C:\\Users\\johnr\\.gradle\\daemon\\7.5\\com.example.mealplanner.app-main-35:\\menu\\reminder_menu.xml"
     },
     {
         "merged": "C:\\Users\\johnr\\.gradle\\daemon\\7.5\\com.example.mealplanner.app-merged_res-33:\\layout_activity_main.xml.flat",
@@ -40,10 +36,6 @@
         "source": "C:\\Users\\johnr\\.gradle\\daemon\\7.5\\com.example.mealplanner.app-main-35:\\xml\\data_extraction_rules.xml"
     },
     {
-        "merged": "com.example.mealplanner.app-merged_res-33:/layout_activity_main.xml.flat",
-        "source": "com.example.mealplanner.app-main-35:/layout/activity_main.xml"
-    },
-    {
         "merged": "C:\\Users\\johnr\\.gradle\\daemon\\7.5\\com.example.mealplanner.app-merged_res-33:\\mipmap-hdpi_ic_launcher.webp.flat",
         "source": "C:\\Users\\johnr\\.gradle\\daemon\\7.5\\com.example.mealplanner.app-main-35:\\mipmap-hdpi\\ic_launcher.webp"
     },
@@ -54,6 +46,10 @@
     {
         "merged": "C:\\Users\\johnr\\.gradle\\daemon\\7.5\\com.example.mealplanner.app-merged_res-33:\\drawable-v24_ic_launcher_foreground.xml.flat",
         "source": "C:\\Users\\johnr\\.gradle\\daemon\\7.5\\com.example.mealplanner.app-main-35:\\drawable-v24\\ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "com.example.mealplanner.app-merged_res-33:/layout_shoppinglist.xml.flat",
+        "source": "com.example.mealplanner.app-main-35:/layout/shoppinglist.xml"
     },
     {
         "merged": "C:\\Users\\johnr\\.gradle\\daemon\\7.5\\com.example.mealplanner.app-merged_res-33:\\mipmap-xxxhdpi_ic_launcher_round.webp.flat",

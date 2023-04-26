@@ -12,4 +12,7 @@
     <string name="enter_an_ingredient_and_click_search">Enter an ingredient and click Search</string>
     <string name="enter_text_here">Enter text here...</string>
     <string name="search">Search</string>
+    <string name="remove">Remove</string>
+    <string name="update">Update</string>
+    <string name="shopping_list">Shopping List</string>
 </resources>

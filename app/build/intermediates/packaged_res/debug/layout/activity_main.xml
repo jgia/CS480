@@ -8,16 +8,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:text="@string/meals_this_week"
         android:gravity="center"
-        android:paddingVertical="15dp" />
+        android:paddingVertical="15dp"
+        android:text="@string/meals_this_week" />
 
     <ListView
         android:id="@+id/weeklyMeals"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/title"
-        android:layout_above="@+id/button_layout" />
+        android:layout_above="@+id/button_layout"
+        android:layout_below="@id/title" />
 
     <LinearLayout
         android:id="@+id/button_layout"
@@ -29,25 +29,25 @@
 
         <Button
             android:id="@+id/delete_button"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/delete"
             android:layout_marginEnd="10dp"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:text="@string/delete" />
 
         <Button
             android:id="@+id/recipe_button"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/view_recipe"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:text="@string/view_recipe" />
 
         <Button
             android:id="@+id/reminder_button"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/set_reminder"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:text="@string/set_reminder" />
 
     </LinearLayout>
 

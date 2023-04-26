@@ -3457,7 +3457,6 @@ id fitToContents
 id fitXY
 id fixed
 id flip
-id floater_button
 id floating
 id food_description
 id food_name
@@ -4196,15 +4195,18 @@ string places_cancel
 string places_powered_by_google
 string places_search_error
 string places_try_again
+string remove
 string search
 string search_menu_title
 string searchbar_scrolling_view_behavior
 string searchview_clear_text_content_description
 string searchview_navigation_content_description
 string set_reminder
+string shopping_list
 string side_sheet_accessibility_pane_title
 string side_sheet_behavior
 string status_bar_notification_info_overflow
+string update
 string view_recipe
 style AlertDialog_AppCompat
 style AlertDialog_AppCompat_Light

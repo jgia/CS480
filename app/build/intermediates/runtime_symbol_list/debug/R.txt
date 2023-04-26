@@ -3456,7 +3456,6 @@ int id fitToContents 0x7f0a00c8
 int id fitXY 0x7f0a00c9
 int id fixed 0x7f0a00ca
 int id flip 0x7f0a00cb
-int id floater_button 0x7f0a00cc
 int id floating 0x7f0a00cd
 int id food_description 0x7f0a00ce
 int id food_name 0x7f0a00cf
@@ -4195,15 +4194,18 @@ int string places_cancel 0x7f1300b1
 int string places_powered_by_google 0x7f1300b2
 int string places_search_error 0x7f1300b3
 int string places_try_again 0x7f1300b4
+int string remove 0x7f1300c2
 int string search 0x7f1300c1
 int string search_menu_title 0x7f1300b5
 int string searchbar_scrolling_view_behavior 0x7f1300b6
 int string searchview_clear_text_content_description 0x7f1300b7
 int string searchview_navigation_content_description 0x7f1300b8
 int string set_reminder 0x7f1300b9
+int string shopping_list 0x7f1300c3
 int string side_sheet_accessibility_pane_title 0x7f1300ba
 int string side_sheet_behavior 0x7f1300bb
 int string status_bar_notification_info_overflow 0x7f1300bc
+int string update 0x7f1300c4
 int string view_recipe 0x7f1300bd
 int style AlertDialog_AppCompat 0x7f140000
 int style AlertDialog_AppCompat_Light 0x7f140001

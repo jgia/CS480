@@ -38,8 +38,11 @@
     AIzaSyCiI84UB2NcYD3ESP8u-b6IN-eKiBjETEY
     </string>
     <string name="meals_this_week">Meals This Week</string>
+    <string name="remove">Remove</string>
     <string name="search">Search</string>
     <string name="set_reminder">Set Reminder</string>
+    <string name="shopping_list">Shopping List</string>
+    <string name="update">Update</string>
     <string name="view_recipe">View Recipe</string>
     <style name="Theme.MealPlanner" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         
