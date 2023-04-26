@@ -8,7 +8,6 @@
     <item
         android:id="@+id/oneHourReminder"
         android:title="@string/_1_hour_before" />
-
     <item
         android:id="@+id/threeHourReminder"
         android:title="@string/_3_hours_before" />

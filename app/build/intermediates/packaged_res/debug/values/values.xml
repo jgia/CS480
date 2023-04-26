@@ -32,14 +32,19 @@
     <string name="app_name">MealPlanner</string>
     <string name="browse_meals">Browse Meals</string>
     <string name="delete">Delete</string>
+    <string name="enter_address_or_location">Enter address or location</string>
     <string name="enter_an_ingredient_and_click_search">Enter an ingredient and click Search</string>
     <string name="enter_text_here">Enter text here...</string>
+    <string name="go">GO</string>
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
     AIzaSyCiI84UB2NcYD3ESP8u-b6IN-eKiBjETEY
     </string>
+    <string name="home">Home</string>
     <string name="meals_this_week">Meals This Week</string>
+    <string name="nearby_stores">Nearby Stores</string>
     <string name="remove">Remove</string>
     <string name="search">Search</string>
+    <string name="select_a_marker">Select a marker.</string>
     <string name="set_reminder">Set Reminder</string>
     <string name="shopping_list">Shopping List</string>
     <string name="update">Update</string>

@@ -3,26 +3,20 @@ package com.example.mealplanner;
 import static android.content.ContentValues.TAG;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.media.audiofx.AutomaticGainControl;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,8 +27,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -44,11 +36,9 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
-
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -59,8 +49,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -72,30 +60,27 @@ public class nearbyStores extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleMap mMap;
     private LocationManager locationManager;
     private LocationListener locationListener;
-    private PlacesClient placesClient;
-    private FusedLocationProviderClient fusedLocationProviderClient;
-    private ListView listView;
     private double latitude;
     private double longitude;
     private Marker selectedMarker;
     private EditText editText;
-    ArrayList<String> locationList = new ArrayList<String>();
-    private String Url;
+    ArrayList<String> locationList = new ArrayList<>();
     private TextView text;
-    private Button button;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.nearbystores);
 
         text = findViewById(R.id.text_view);
-        button = findViewById(R.id.button_go);
+        Button button = findViewById(R.id.button_go);
         editText = findViewById(R.id.searchbar);
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationListener = new MyLocationListener();
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        assert mapFragment != null;
         mapFragment.getMapAsync(this);
 
         //Running a location check in the oncreate to create values of lat and long for lookup
@@ -114,47 +99,32 @@ public class nearbyStores extends AppCompatActivity implements OnMapReadyCallbac
         }
         //Autocomplete implementation
         editText.setFocusable(false);
-        editText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                List<Place.Field> fieldList = Arrays.asList(Place.Field.ADDRESS
-                ,Place.Field.LAT_LNG,Place.Field.NAME);
-                //intent
-                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY,fieldList).build(nearbyStores.this);
-                //Send intent to complete search for new address
-                startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
-            }
+        editText.setOnClickListener(v -> {
+            List<Place.Field> fieldList = Arrays.asList(Place.Field.ADDRESS
+                    , Place.Field.LAT_LNG, Place.Field.NAME);
+            //intent
+            Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fieldList).build(nearbyStores.this);
+            //Send intent to complete search for new address
+            startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
         });
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (selectedMarker != null) {
-                    LatLng latLng = selectedMarker.getPosition();
-                    String name = selectedMarker.getTitle();
-                    String address = selectedMarker.getSnippet();
+        button.setOnClickListener(v -> {
+            if (selectedMarker != null) {
+                LatLng latLng = selectedMarker.getPosition();
 
-                    double distance = calculateDistance(latLng.latitude, latLng.longitude);
-                    String distanceString = String.format("%.2f", distance);
-
-                    // create an Intent to launch Google Maps
-                    Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                            Uri.parse("https://www.google.com/maps/dir/?api=1&origin=" +
-                                    latitude + "," + longitude + "&destination=" +
-                                    latLng.latitude + "," + latLng.longitude));
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(nearbyStores.this, "Please select a marker", Toast.LENGTH_SHORT).show();
-                }
+                // create an Intent to launch Google Maps
+                Intent intent = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("https://www.google.com/maps/dir/?api=1&origin=" +
+                                latitude + "," + longitude + "&destination=" +
+                                latLng.latitude + "," + latLng.longitude));
+                startActivity(intent);
+            } else {
+                Toast.makeText(nearbyStores.this, "Please select a marker", Toast.LENGTH_SHORT).show();
             }
         });
 
         // Construct a PlacesClient
         Places.initialize(getApplicationContext(), getString(R.string.google_maps_key));
-        placesClient = Places.createClient(this);
-        // Construct a FusedLocationProviderClient.
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
-        StringBuilder builder = new StringBuilder();
         //Thread for lookup
         Thread t = new Thread(background);
         t.start();
@@ -174,18 +144,16 @@ public class nearbyStores extends AppCompatActivity implements OnMapReadyCallbac
             String baseUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
             // Set the parameters
             String lati = Double.toString(latitude);
-            String longi =Double.toString(longitude);
+            String longi = Double.toString(longitude);
             String location = lati + "%2C" + longi;
             int radius = 90000;
             String type = "supermarket";
             String apiKey = "AIzaSyCiI84UB2NcYD3ESP8u-b6IN-eKiBjETEY";
             // Construct the URL
-            StringBuilder urlBuilder = new StringBuilder(baseUrl);
-            urlBuilder.append("location=").append(location);
-            urlBuilder.append("&radius=").append(radius);
-            urlBuilder.append("&type=").append(type)    ;
-            urlBuilder.append("&key=").append(apiKey);
-            String Url = urlBuilder.toString();
+            String Url = baseUrl + "location=" + location +
+                    "&radius=" + radius +
+                    "&type=" + type +
+                    "&key=" + apiKey;
             InputStream is = null;
             try {
                 URL url = new URL(Url);
@@ -230,10 +198,10 @@ public class nearbyStores extends AppCompatActivity implements OnMapReadyCallbac
             try {
                 JSONObject obj = new JSONObject(readJSONFeed);
                 JSONArray resultsArray = obj.getJSONArray("results");
-                Log.i("JSON", "Number of entries " +obj.length());
+                Log.i("JSON", "Number of entries " + obj.length());
 
                 //for each array item get title and date
-                for (int i = 0; i<resultsArray.length();i++){
+                for (int i = 0; i < resultsArray.length(); i++) {
                     JSONObject jsnObject = resultsArray.getJSONObject(i);
                     JSONObject locationObject = jsnObject.getJSONObject("geometry").getJSONObject("location");
                     JSONObject nameObject = resultsArray.getJSONObject(i);
@@ -241,24 +209,18 @@ public class nearbyStores extends AppCompatActivity implements OnMapReadyCallbac
                     String lng = locationObject.getString("lng");
                     String name = nameObject.getString("name");
                     String address = nameObject.getString("vicinity");
-                    Log.i("JSON", "Name " +name);
+                    Log.i("JSON", "Name " + name);
                     //Create marker data
-                    LatLng latLng = new LatLng (Double.parseDouble (lat), Double.parseDouble(lng));
+                    LatLng latLng = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
                     MarkerOptions markerOptions = new MarkerOptions();
-                    markerOptions.title (name);
-                    markerOptions.position (latLng);
+                    markerOptions.title(name);
+                    markerOptions.position(latLng);
                     markerOptions.snippet(address);
                     String nameAndAddress = name + ", " + address;
                     locationList.add(nameAndAddress);
 
                     //add markers on UI Thread
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            Marker marker = mMap.addMarker(markerOptions);
-                        }
-                    });
+                    runOnUiThread(() -> mMap.addMarker(markerOptions));
                 }
             } catch (JSONException e) {
                 e.getMessage();
@@ -266,6 +228,7 @@ public class nearbyStores extends AppCompatActivity implements OnMapReadyCallbac
             }
         }
     };
+
     //Activity result after user chooses option from autocomplete menu.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -295,6 +258,7 @@ public class nearbyStores extends AppCompatActivity implements OnMapReadyCallbac
             }
         }
     }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -302,25 +266,21 @@ public class nearbyStores extends AppCompatActivity implements OnMapReadyCallbac
 
         // set up the marker click listener
         // Has to be set up in onMapReady function because markers are set in a background thread.
-        // Or atleast I think. I tried to put this else where both in the oncreate and as a general function
-        //and it didnt work.
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                selectedMarker = marker;
-                LatLng latLng = marker.getPosition();
-                String name = marker.getTitle();
-                String address = marker.getSnippet();
+        // Or at least I think. I tried to put this else where both in the oncreate and as a general function
+        // and it didn't work.
+        mMap.setOnMarkerClickListener(marker -> {
+            selectedMarker = marker;
+            String name = marker.getTitle();
+            String address = marker.getSnippet();
 
-                double distance = calculateDistance(marker.getPosition().latitude, marker.getPosition().longitude);
-                String distanceString = String.format("%.2f", distance);
-                text.setText(name + "\n" + address + " (" + distanceString + " miles away)");
+            double distance = calculateDistance(marker.getPosition().latitude, marker.getPosition().longitude);
+            String distanceString = String.format("%.2f", distance);
+            text.setText(name + "\n" + address + " (" + distanceString + " miles away)");
 
-                return false;
-            }
-
+            return false;
         });
     }
+
     //Calculate distance between middle marker and selected marker.
     public double calculateDistance(double lat2, double lon2) {
         double earthRadius = 3958.8;
@@ -335,9 +295,7 @@ public class nearbyStores extends AppCompatActivity implements OnMapReadyCallbac
 
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-        double distance = earthRadius * c;
-
-        return distance;
+        return earthRadius * c;
     }
 
     private void enableMyLocation() {
@@ -351,6 +309,7 @@ public class nearbyStores extends AppCompatActivity implements OnMapReadyCallbac
                     LOCATION_PERMISSION_REQUEST_CODE);
         }
     }
+
     public class MyLocationListener implements LocationListener {
 
         @Override
@@ -361,19 +320,6 @@ public class nearbyStores extends AppCompatActivity implements OnMapReadyCallbac
             LatLng currentLocation = new LatLng(loc.getLatitude(), loc.getLongitude());
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 14));
             mMap.addMarker(new MarkerOptions().position(currentLocation).title("Current Location"));
-
-            String text = "My current location is: " +
-                    "Latitude = " + loc.getLatitude() +
-                    "Longitude = " + loc.getLongitude();
-
-
-        }
-        public double getCurrentLatitude(Location loc) {
-            return loc.getLatitude();
-        }
-
-        public double getCurrentLongitude(Location loc) {
-            return loc.getLongitude();
         }
 
         @Override
@@ -412,6 +358,8 @@ public class nearbyStores extends AppCompatActivity implements OnMapReadyCallbac
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
+
+    @SuppressLint("NonConstantResourceId")
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.browse:

@@ -11,7 +11,9 @@
         android:id="@+id/searchbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter address or location"
+        android:autofillHints=""
+        android:hint="@string/enter_address_or_location"
+        android:inputType="text"
         android:padding="10dp"
         android:textSize="16sp" />
 
@@ -21,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.93"
-        tools:context=".MapsActivity"/>
+        tools:context=".MapsActivity" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -34,17 +36,17 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:text="GO"/>
+            android:text="@string/go" />
 
         <TextView
             android:id="@+id/text_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Select a marker."
             android:layout_toStartOf="@id/button_go"
+            android:text="@string/select_a_marker"
             android:textColor="@android:color/black"
             android:textSize="15sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
     </RelativeLayout>
 

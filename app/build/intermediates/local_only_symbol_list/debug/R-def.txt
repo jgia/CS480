@@ -70,12 +70,17 @@ string _6_hours_before
 string app_name
 string browse_meals
 string delete
+string enter_address_or_location
 string enter_an_ingredient_and_click_search
 string enter_text_here
+string go
 string google_maps_key
+string home
 string meals_this_week
+string nearby_stores
 string remove
 string search
+string select_a_marker
 string set_reminder
 string shopping_list
 string update
