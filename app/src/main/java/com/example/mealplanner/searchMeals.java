@@ -1,6 +1,3 @@
-// java behind activity_search_meals.xml
-//
-
 package com.example.mealplanner;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,13 +30,14 @@ public class searchMeals extends AppCompatActivity implements AdapterView.OnItem
     private String name, duration, input, id;
     private ArrayList<String> recipeList;
     ArrayAdapter<String> adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.browse_meals_search);
 
         // grab widgets: enterText (EditText), searchButton (AppCompatButton?), recipes (ListView)
-        entry = (EditText)findViewById(R.id.enterText);
+        entry = (EditText) findViewById(R.id.enterText);
         search = (Button) findViewById(R.id.searchButton);
         recipes = (ListView) findViewById(R.id.recipes);
         recipes.setOnItemClickListener(this);
@@ -69,6 +67,7 @@ public class searchMeals extends AppCompatActivity implements AdapterView.OnItem
         });
 
     }
+
     Runnable databaseCall = new Runnable() {
         @Override
         public void run() {
@@ -100,7 +99,7 @@ public class searchMeals extends AppCompatActivity implements AdapterView.OnItem
                 //CHANGE TO PREPARED
                 ResultSet result = pstmt.executeQuery();
 
-                while (result.next()){
+                while (result.next()) {
                     name = result.getString("Name");
                     duration = result.getString("TotalTime");
                     id = result.getString("RecipeID");
@@ -140,6 +139,7 @@ public class searchMeals extends AppCompatActivity implements AdapterView.OnItem
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -160,6 +160,4 @@ public class searchMeals extends AppCompatActivity implements AdapterView.OnItem
                 return super.onOptionsItemSelected(item);
         }
     }
-
-
 }

@@ -11,8 +11,10 @@ color purple_700
 color teal_200
 color teal_700
 color white
+drawable droid
 drawable ic_launcher_background
 drawable ic_launcher_foreground
+drawable notification_icon
 font archivo_black
 id browse
 id browseTitle
@@ -54,7 +56,6 @@ id title
 id update_button
 id weeklyMeals
 layout activity_main
-layout activity_search_meals
 layout browse_meals_search
 layout fooddescription
 layout nearbystores
@@ -68,9 +69,13 @@ string _30_minutes_before
 string _3_hours_before
 string _6_hours_before
 string app_name
+string browse_meals
 string delete
+string enter_an_ingredient_and_click_search
+string enter_text_here
 string google_maps_key
 string meals_this_week
+string search
 string set_reminder
 string view_recipe
 style Theme.MealPlanner

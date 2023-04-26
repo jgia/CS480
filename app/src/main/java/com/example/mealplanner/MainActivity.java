@@ -11,6 +11,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.Menu;
@@ -32,11 +34,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public final static DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");
     private String dateStr = "";
     private int recipeID = -1;
+
+    private View lastSelectedView;
     public static ArrayList<Meal> meals = new ArrayList<>();
     public static ArrayAdapter<Meal> adapt;
     public static String NOTIFICATION_CHANNEL_ID = "1001";
     public static String default_notification_id = "default";
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         });
 
         Button reminder_button = findViewById(R.id.reminder_button);
-        reminder_button.setOnClickListener(view ->{
+        reminder_button.setOnClickListener(view -> {
             // Create and expand the popup menu for setting reminders
             PopupMenu popupMenu = new PopupMenu(this, view);
             popupMenu.inflate(R.menu.reminder_menu);
@@ -104,8 +109,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                 Toast toast = Toast.makeText(getApplicationContext(), "Reminder set for " + dateFormat.format(reminderTime), Toast.LENGTH_SHORT);
                                 scheduleNotification(getNotification("Meal in 30 minutes!"), (int) timeUntilReminder.toMillis());
                                 toast.show();
-                            }
-                            else{
+                            } else {
                                 Toast toast = Toast.makeText(getApplicationContext(), "The meal is in less than 30 minutes! Reminder not set.", Toast.LENGTH_SHORT);
                                 toast.show();
                             }
@@ -124,8 +128,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                 Toast toast = Toast.makeText(getApplicationContext(), "Reminder set for " + dateFormat.format(reminderTime), Toast.LENGTH_SHORT);
                                 scheduleNotification(getNotification("Meal in 1 hour!"), (int) timeUntilReminder.toMillis());
                                 toast.show();
-                            }
-                            else{
+                            } else {
                                 Toast toast = Toast.makeText(getApplicationContext(), "The meal is in less than 1 hour! Reminder not set.", Toast.LENGTH_SHORT);
                                 toast.show();
                             }
@@ -144,8 +147,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                 Toast toast = Toast.makeText(getApplicationContext(), "Reminder set for " + dateFormat.format(reminderTime), Toast.LENGTH_SHORT);
                                 scheduleNotification(getNotification("Meal in 3 hours!"), (int) timeUntilReminder.toMillis());
                                 toast.show();
-                            }
-                            else{
+                            } else {
                                 Toast toast = Toast.makeText(getApplicationContext(), "The meal is in less than 3 hours! Reminder not set.", Toast.LENGTH_SHORT);
                                 toast.show();
                             }
@@ -164,8 +166,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                 Toast toast = Toast.makeText(getApplicationContext(), "Reminder set for " + dateFormat.format(reminderTime), Toast.LENGTH_SHORT);
                                 scheduleNotification(getNotification("Meal in 6 hours!"), (int) timeUntilReminder.toMillis());
                                 toast.show();
-                            }
-                            else{
+                            } else {
                                 Toast toast = Toast.makeText(getApplicationContext(), "The meal is in less than 6 hours! Reminder not set.", Toast.LENGTH_SHORT);
                                 toast.show();
                             }
@@ -214,12 +215,42 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+        // If a list item has been selected before, it has a blue background with white text to indicate that it is selected
+        // When we select a new item, we want to reset colors on the old item (as it is no longer selected)
+        if (lastSelectedView != null && lastSelectedView != v) {
+            TextView lastTextView = lastSelectedView.findViewById(android.R.id.text1);
+            lastTextView.setTextColor(Color.BLACK);
+            lastSelectedView.setBackgroundColor(Color.TRANSPARENT);
+        }
+
+        // Grab the date and recipeID of the meal that was just selected
         dateStr = dateFormat.format(meals.get(position).getDateTime());
         recipeID = meals.get(position).getRecipeID();
-        // Set the new selected item position and change its styling
-        TextView textView = (TextView) v.findViewById(android.R.id.text1);
-        textView.setTextColor(Color.WHITE);
-        v.setBackgroundColor(Color.BLUE);
+
+        // Grab the text and background of the meal that was just selected
+        TextView textView = v.findViewById(android.R.id.text1);
+        Drawable background = v.getBackground();
+
+        // If an item has never been selected before, it's background it technically null
+        // However, we'll say the default background has the color Color.TRANSPARENT (it looks the same as a null background)
+        int backgroundColor = Color.TRANSPARENT;
+        // If the background is not null, it's either TRANSPARENT or BLUE. We'll check that here
+        if (background != null) {
+            backgroundColor = ((ColorDrawable) background).getColor();
+        }
+
+        // If the background color is transparent, this list item was not previously selected.
+        // Now that the user has selected it, we can update its colors to indicate it has been selected
+        if (backgroundColor == Color.TRANSPARENT) {
+            lastSelectedView = v;
+            textView.setTextColor(Color.WHITE);
+            v.setBackgroundColor(Color.BLUE);
+        } else { // If the background color was already blue, the user wants to unselect it
+            recipeID = -1; // We can clear recipeID and dateStr and reset the colors of the list item
+            dateStr = "";
+            textView.setTextColor(Color.BLACK);
+            v.setBackgroundColor(Color.TRANSPARENT);
+        }
     }
 
     public void deleteMeal() {
@@ -247,18 +278,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     // The following two methods were created based on code from the following KDTechs YouTube video: https://www.youtube.com/watch?v=Ijv0vcxNk78
 
     // scheduleNotification Schedules a notification to occur in a specific amount of milliseconds (delay) using the MyNotificationPublisher class
-    private void scheduleNotification(Notification notification, int delay){
+    private void scheduleNotification(Notification notification, int delay) {
         Intent notificationIntent = new Intent(this, MyNotificationPublisher.class);
-        notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATIONID,1);
+        notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATIONID, 1);
         notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATION, notification);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-        long futureMillis = SystemClock.elapsedRealtime()+delay;
+        long futureMillis = SystemClock.elapsedRealtime() + delay;
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         assert alarmManager != null;
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureMillis, pendingIntent);
     }
 
-    private Notification getNotification(String content){
+    private Notification getNotification(String content) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, default_notification_id);
         builder.setContentText(content);
         builder.setSmallIcon(R.drawable.ic_launcher_foreground);

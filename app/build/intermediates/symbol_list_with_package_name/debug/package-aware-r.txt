@@ -3153,6 +3153,7 @@ drawable design_ic_visibility
 drawable design_ic_visibility_off
 drawable design_password_eye
 drawable design_snackbar_background
+drawable droid
 drawable googleg_disabled_color_18
 drawable googleg_standard_color_18
 drawable ic_arrow_back_black_24
@@ -3235,6 +3236,7 @@ drawable notification_bg_low_normal
 drawable notification_bg_low_pressed
 drawable notification_bg_normal
 drawable notification_bg_normal_pressed
+drawable notification_icon
 drawable notification_icon_background
 drawable notification_template_icon_bg
 drawable notification_template_icon_low_bg
@@ -3915,7 +3917,6 @@ layout abc_search_view
 layout abc_select_dialog_material
 layout abc_tooltip
 layout activity_main
-layout activity_search_meals
 layout browse_meals_search
 layout custom_dialog
 layout design_bottom_navigation_item
@@ -4051,6 +4052,7 @@ string bottomsheet_action_expand
 string bottomsheet_action_expand_halfway
 string bottomsheet_drag_handle_clicked
 string bottomsheet_drag_handle_content_description
+string browse_meals
 string character_counter_content_description
 string character_counter_overflowed_content_description
 string character_counter_pattern
@@ -4074,6 +4076,8 @@ string common_open_on_phone
 string common_signin_button_text
 string common_signin_button_text_long
 string delete
+string enter_an_ingredient_and_click_search
+string enter_text_here
 string error_a11y_label
 string error_icon_content_description
 string exposed_dropdown_menu_content_description
@@ -4192,6 +4196,7 @@ string places_cancel
 string places_powered_by_google
 string places_search_error
 string places_try_again
+string search
 string search_menu_title
 string searchbar_scrolling_view_behavior
 string searchview_clear_text_content_description

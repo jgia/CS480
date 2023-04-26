@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -25,8 +26,6 @@ public class SQLHelper extends SQLiteOpenHelper {
     public static final String CREATE_TABLE = "CREATE TABLE meals ("
             + KEY_MEAL_ID + "," + KEY_RECIPE + " integer,"
             + KEY_DATETIME + " text);";
-
-    private ContentValues values;
 
     public SQLHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -51,32 +50,15 @@ public class SQLHelper extends SQLiteOpenHelper {
         onCreate(db);   //not calling a lifecycle method
     }
 
-    //drop table
-    public void dropTable() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
-        onCreate(db);   //ot calling a lifecycle method
-    }
-
     // Add meal to the database
     public void addMeal(Meal item) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");
         SQLiteDatabase db = this.getWritableDatabase();
-        values = new ContentValues();
+        ContentValues values = new ContentValues();
         values.put(KEY_RECIPE, item.getRecipeID());
         values.put(KEY_DATETIME, formatter.format(item.getDateTime()));
         db.insert(TABLE_NAME, null, values);
         Log.d("SQLiteDemo", item.getRecipeID() + " added");
-        db.close();
-    }
-
-    // Update meal name in the database
-    public void updateMeal(Meal item, Meal newItem) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        values = new ContentValues();
-        values.put(KEY_RECIPE, newItem.getRecipeID());
-        db.update(TABLE_NAME, values, KEY_RECIPE + "=?", new String[]{String.valueOf(item.getRecipeID())});
-        Log.d("SQLiteDemo", item.getRecipeID() + " updated");
         db.close();
     }
 

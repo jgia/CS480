@@ -8,4 +8,8 @@
     <string name="_1_hour_before">1 hour before</string>
     <string name="_3_hours_before">3 hours before</string>
     <string name="_6_hours_before">6 hours before</string>
+    <string name="browse_meals">Browse Meals</string>
+    <string name="enter_an_ingredient_and_click_search">Enter an ingredient and click Search</string>
+    <string name="enter_text_here">Enter text here...</string>
+    <string name="search">Search</string>
 </resources>

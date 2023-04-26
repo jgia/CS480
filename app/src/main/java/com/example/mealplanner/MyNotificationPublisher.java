@@ -13,8 +13,9 @@ public class MyNotificationPublisher extends BroadcastReceiver {
 
     public static String NOTIFICATIONID = "notification-id";
     public static String NOTIFICATION = "notification";
+
     @Override
-    public void onReceive(Context context, Intent intent){
+    public void onReceive(Context context, Intent intent) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notification = intent.getParcelableExtra(NOTIFICATION);
         int importance = NotificationManager.IMPORTANCE_HIGH;
